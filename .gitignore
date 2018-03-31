@@ -286,3 +286,10 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+
+*
+
+!.XComModBridge.ucproj
+!/XComModBridge
+XComModBridge/obj
+!/XComModBridge_Shell

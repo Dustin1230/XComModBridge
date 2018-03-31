@@ -14,6 +14,7 @@ var string functionName;
 var string functParas;
 var string ModInitError;
 var bool bModReturn;
+var class<CheatManager> ModCheatClass;
 var array<XComMod> MBMods;
 var config bool verboseLog;
 var config array<string> ModList;
@@ -29,6 +30,8 @@ simulated function StartMatch()
 		MBMods.Length = 0;
 
 	functionName = "ModInit";
+
+	class'Engine'.static.GetCurrentWorldInfo().Game.SetTimer(1.0f, true, 'OverwriteCheatClass', self);
 
 	AssignMods();
 
@@ -166,6 +169,170 @@ function bool ModRecordActor(string Checkpoint, class<Actor> ActorClasstoRecord)
 	}
 
 	return false;
+}
+
+function OverwriteCheatClass()
+{
+	local WorldInfo WI;
+	local PlayerController PC;
+	local class<CheatManager> ShellClass;
+	local XComMod ShellClassScript;
+
+	WI = class'Engine'.static.GetCurrentWorldInfo();
+	PC = WI.GetALocalPlayerController();
+
+	if(PC == none)
+		return;
+
+	`Log("PlayerController initalised, overwriting CheatManager", verboseLog, 'ModBridge');
+
+	WI.Game.ClearTimer('OverwriteCheatClass', self);
+
+	if(PC.IsA('XComShellController'))
+	{
+		ShellClassScript = new (self) Class<XComMod>(DynamicLoadObject("XComModBridge_Shell.ShellClassScript", class'Class'));
+
+		ShellClassScript.StartMatch();
+
+		ShellClass = ModCheatClass;
+
+		`Log("Shell detected, using ShellCheatManager", verboseLog, 'ModBridge');
+		PC.CheatClass = ShellClass;
+		PC.CheatManager = new (XComPlayerControllerNativeBase(PC)) ShellClass;
+	}
+	if(PC.IsA('XComHeadquartersController'))
+	{
+		`Log("Strategy detected, using StrategyCheatManager", verboseLog, 'ModBridge');
+		PC.CheatClass = class'Mod_StrategyCheatManager';
+		PC.CheatManager = new (XComHeadquartersController(PC)) class'Mod_StrategyCheatManager';
+	}
+	if(PC.IsA('XComTacticalController'))
+	{
+		`Log("Tactical detected, using TacticalCheatManager", verboseLog, 'ModBridge');
+		PC.CheatClass = class'Mod_TacticalCheatManager';
+		PC.CheatManager = new (XComTacticalController(PC)) class'Mod_TacticalCheatManager';
+	}
+
+}
+
+function SwitchCheatManager(string modpackage)
+{
+	local bool bFound;
+	local XComMod Mod, ShellClassScript;
+	local class<CheatManager> ShellClass;
+	local WorldInfo WI;
+	local PlayerController PC;
+
+	`Log("SwitchCheatManager", verboseLog, 'ModBridge');
+
+	if(modpackage == "")
+	{
+		`Log("Switching to base Mod Cheat class", verboseLog, 'ModBridge');
+		OverwriteCheatClass();
+		return;
+	}
+
+	WI = class'Engine'.static.GetCurrentWorldInfo();
+	PC = WI.GetALocalPlayerController();
+
+	foreach MBMods(Mod)
+	{
+		if(string(Mod.Class.GetPackageName()) == modpackage)
+		{
+			bFound = true;
+			break;
+		}
+	}
+	if(!bFound)
+	{
+		foreach XComGameInfo(Outer).Mods(Mod)
+		{
+			if(Mod != self && string(Mod.Class.GetPackageName()) == modpackage)
+			{
+				bFound = true;
+				break;
+			}
+		}
+	}
+
+	if(!bFound)
+	{
+		`Log("Switching to base Mod Cheat class", verboseLog, 'ModBridge');
+		OverwriteCheatClass();
+		return;
+	}
+	else
+	{
+		`Log("looking for CheatManager in \"" $ Mod.Class $ "\"", verboseLog, 'ModBridge');  
+
+		bFound = false;
+
+		functionName = "SwitchCheatManager";
+
+		if(PC.IsA('XComShellController'))
+		{
+			ShellClassScript = new (self) class<XComMod>(DynamicLoadObject("XComModBridge_Shell.ShellClassScript", class'Class'));
+
+			ShellClassScript.StartMatch();
+
+			ShellClass = ModCheatClass;
+
+
+			functParas = "Shell";
+			Mod.StartMatch();
+			if(ClassIsChildOf(ModCheatClass, ShellClass))
+			{
+				`Log("Found CheatManager: \"" $ ModCheatClass $ "\" for Shell", verboseLog, 'ModBridge');
+				PC.CheatClass = ModCheatClass;
+				PC.CheatManager = new (XComPlayerControllerNativeBase(PC)) ModCheatClass;
+				bFound = true;
+			}
+		}
+		else if(PC.IsA('XComHeadquartersController'))
+		{
+			functParas = "Strategy";
+			Mod.StartMatch();
+			if(ClassIsChildOf(ModCheatClass, class'Mod_StrategyCheatManager'))
+			{
+				`Log("Found CheatManager: \"" $ ModCheatClass $ "\" for Strategy", verboseLog, 'ModBridge');
+				PC.CheatClass = ModCheatClass;
+				PC.CheatManager = new (XComHeadquartersController(PC)) ModCheatClass;
+				bFound = true;
+			}
+		}
+		else if(PC.IsA('XComTacticalController'))
+		{
+			functParas = "Tactical";
+			Mod.StartMatch();
+			if(ClassIsChildOf(ModCheatClass, class'Mod_TacticalCheatManager'))
+			{
+				`Log("Found CheatManager: \"" $ ModCheatClass $ "\" for Tactical", verboseLog, 'ModBridge');
+				PC.CheatClass = ModCheatClass;
+				PC.CheatManager = new (XComTacticalController(PC)) ModCheatClass;
+				bFound = true;
+			}
+		}
+
+		if(!bFound)
+		{
+			if(ClassIsChildOf(ModCheatClass, class'Mod_CheatManager'))
+			{
+				`Log("Found Generic CheatManager: \"" $ ModCheatClass $ "\"", verboseLog, 'ModBridge');
+				PC.CheatClass = ModCheatClass;
+				PC.CheatManager = new (XComPlayerControllerNativeBase(PC)) ModCheatClass;
+			}
+			else
+			{
+				`Log("Switching to base Mod Cheat class", verboseLog, 'ModBridge');
+				OverwriteCheatClass();
+			}
+		}
+	}
+
+	ModCheatClass = none;
+	functionName = "";
+	functParas = "";
+
 }
 
 function string GetCallingMod(optional int backlevels = 3)

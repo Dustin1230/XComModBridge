@@ -1,0 +1,4 @@
+exec function SwitchCheatManager(optional string ModPackage)
+{
+	ModBridge(XComGameInfo(class'Engine'.static.GetCurrentWorldInfo().Game).Mods[0]).SwitchCheatManager(ModPackage);
+}

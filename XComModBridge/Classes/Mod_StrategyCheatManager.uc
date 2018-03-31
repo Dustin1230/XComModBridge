@@ -1,5 +1,7 @@
 class Mod_StrategyCheatManager extends XComHeadquartersCheatManager
-	implements(Mod_CheatManager);
+	dependson(ModBridge);
+
+`include(XComModBridge\Mod_CheatManager.uci)
 
 DefaultProperties
 {

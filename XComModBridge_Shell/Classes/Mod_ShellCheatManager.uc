@@ -1,5 +1,7 @@
 class Mod_ShellCheatManager extends XComShellCheatManager
-	implements(Mod_CheatManager);
+	dependson(ModBridge);
+
+`include(XComModBridge\Mod_CheatManager.uci)
 
 DefaultProperties
 {

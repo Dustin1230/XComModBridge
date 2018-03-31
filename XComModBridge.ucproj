@@ -39,11 +39,15 @@
     <LogToFile>False</LogToFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="*\*.uc" />
-    <Content Include="**\*.uci" />
+    <Compile Include="XComModBridge\Classes\*.uc" />
+    <Compile Include="XComModBridge_Shell\Classes\*.uc" />
+    <Content Include="XComModBridge\*.uci" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="*\" />
+    <Folder Include="XComModBridge_Shell" />
+    <Folder Include="XComModBridge\" />
+    <Folder Include="XComModBridge\Classes\" />
+    <Folder Include="XComModBridge_Shell\Classes" />
   </ItemGroup>
   <Import Condition="'$(MSBuildExtensionsPath32)' != ''" Project="$(MSBuildExtensionsPath32)\PixelMine\UnrealScript.targets" />
   <Import Condition="'$(MSBuildExtensionsPath32)' == ''" Project="$(MSBuildExtensionsPath)\PixelMine\UnrealScript.targets" />
