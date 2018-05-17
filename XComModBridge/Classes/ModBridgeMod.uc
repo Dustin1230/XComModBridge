@@ -24,7 +24,7 @@ function ModBridge ModBridge()
 	return ModBridge(XComGameInfo(WorldInfo.Game).Mods[0]);
 }
 
-function InitModBridge()
+function InitModVals()
 {
 	valStrValue0 	= ModBridge().valStrValue0;
 	valStrValue1 	= ModBridge().valStrValue1;
@@ -82,7 +82,7 @@ function string StrValue0(optional string str, optional bool bForce)
 	local string outstr;
 
 	outstr = ModBridge().StrValue0(str, bForce);
-	InitModBridge();
+	InitModVals();
 	return outstr;
 }
 
@@ -91,7 +91,7 @@ function string StrValue1(optional string str, optional bool bForce)
 	local string outstr;
 
 	outstr = ModBridge().StrValue1(str, bForce);
-	InitModBridge();
+	InitModVals();
 	return outstr;
 }
 
@@ -100,7 +100,7 @@ function string StrValue2(optional string str, optional bool bForce)
 	local string outstr;
 
 	outstr = ModBridge().StrValue2(str, bForce);
-	InitModBridge();
+	InitModVals();
 	return outstr;
 }
 
@@ -109,7 +109,7 @@ function string IntValue0(optional int I = -1, optional bool bForce)
 	local int outint;
 
 	outint = ModBridge().IntValue0(I, bForce);
-	InitModBridge();
+	InitModVals();
 	return outint;
 }
 
@@ -118,7 +118,7 @@ function string IntValue1(optional int I = -1, optional bool bForce)
 	local int outint;
 
 	outint = ModBridge().IntValue1(I, bForce);
-	InitModBridge();
+	InitModVals();
 	return outint;
 }
 
@@ -127,7 +127,7 @@ function string IntValue2(optional int I = -1, optional bool bForce)
 	local int outint;
 
 	outint = ModBridge().IntValue2(I, bForce);
-	InitModBridge();
+	InitModVals();
 	return outint;
 }
 
@@ -136,7 +136,7 @@ function array<string> arrStrings(optional array<string> arrStr, optional bool b
 	local array<string> outarr;
 	
 	outarr = ModBridge().arrStrings(arrStr, bForce);
-	InitModBridge();
+	InitModVals();
 	return outarr;
 }
 
@@ -145,7 +145,7 @@ function array<int> arrInts(optional array<int> arrInt, optional bool bForce)
 	local array<int> outarr;
 
 	outarr = ModBridge().arrInts(arrInt, bForce);
-	InitModBridge();
+	InitModVals();
 	return outarr;
 }
 
@@ -154,7 +154,7 @@ function Object Object(optional Object inObj, optional bool bForce)
 	local Object outObj;
 
 	outObj = ModBridge().Object(inObj, bForce);
-	InitModBridge();
+	InitModVals();
 	return outObj;
 }
 
@@ -163,6 +163,26 @@ function TTableMenu TMenu(optional TTableMenu menu, optional bool bForce)
 	local TTableMenu outtmenu;
 
 	outtmenu = ModBridge().TMenu(menu, bForce);
-	InitModBridge();
+	InitModVals();
 	return outtmenu;
+}
+
+/** 
+ * Returns the actor with same spawn name as the specified string.
+ * Is fastest if you specify the BaseClass and iterator.
+ * Will normally need to be casted to access members (even if BaseClass specified).
+ * 
+ * @param ActorName   The spawn name of the Actor that will be returned.
+ * @param BaseClass   The Actor type to search for. 
+ * @param Iterator    (optional) the Iterator to get your Actor. options are: "Dynamic" (default), "All" (slowest), "Based" (fastest).
+ * @return            The Actor that was found with the same spawn name as in ActorName.
+ */
+function Actor GetActor(string ActorName, class<Actor> BaseClass, optional string Iterator = "Dynamic")
+{
+	return ModBridge().GetActor(ActorName, BaseClass, Iterator);
+}
+
+function Object Mods(string ModName, optional string funcName, optional string paras)
+{
+	return ModBridge().Mods(ModName, funcName, paras);
 }
