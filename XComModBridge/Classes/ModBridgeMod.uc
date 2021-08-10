@@ -10,8 +10,11 @@ var array<string> valArrStr;
 var array<int> valArrInt;
 var TTableMenu valTMenu;
 var Object valObject;
+var delegate<hookType> hook;
 var string functionName;
 var string functParas;
+var bool m_bFromSLoad;
+var bool m_bFromTLoad;
 var string ModInitError;
 var bool bModReturn;
 var class<CheatManager> ModCheatClass;
@@ -24,27 +27,19 @@ function ModBridge ModBridge()
 	return ModBridge(XComGameInfo(WorldInfo.Game).Mods[0]);
 }
 
-function InitModVals()
-{
-	valStrValue0 	= ModBridge().valStrValue0;
-	valStrValue1 	= ModBridge().valStrValue1;
-	valStrValue2 	= ModBridge().valStrValue2;
-	valIntValue0 	= ModBridge().valIntValue0;
-	valIntValue1 	= ModBridge().valIntValue1;
-	valIntValue2 	= ModBridge().valIntValue2;
-	valArrStr		= ModBridge().valArrStr;
-	valArrInt 		= ModBridge().valArrInt;
-	valTMenu 		= ModBridge().valTMenu;
-	functionName 	= ModBridge().functionName;
-	functParas 		= ModBridge().functParas;
-	ModCheatClass 	= ModBridge().ModCheatClass;
-	MBMods 			= ModBridge().MBMods;
-	ModList 		= ModBridge().ModList;
-	verboseLog 		= ModBridge().verboseLog;
-}
-
 function StartMatch()
 {
+}
+
+function ModInit()
+{
+}
+
+delegate hookType(string funcName, string paras);
+
+function SetHookSub(string hookname, delegate<hookType> funcRef)
+{
+	ModBridge().SetHookSub(hookname, funcRef);
 }
 
 function ModError(string Error)
@@ -57,9 +52,9 @@ function bool ModRecordActor(string Checkpoint, class<Actor> ActorClasstoRecord)
 	return ModBridge().ModRecordActor(Checkpoint, ActorClasstoRecord);
 }
 
-function ModRemoveRecordActor(string Checkpoint, class<actor> ActorClassToRemove)
+function ModRemoveRecordedActor(string Checkpoint, class<actor> ActorClassToRemove)
 {
-	ModBridge().ModRemoveRecordActor(Checkpoint, ActorClassToRemove);
+	ModBridge().ModRemoveRecordedActor(Checkpoint, ActorClassToRemove);
 }
 
 function OverwriteCheatClass()
@@ -68,7 +63,7 @@ function OverwriteCheatClass()
 }
 
 function SwitchCheatManager(string modpackage)
-{
+{	
 	ModBridge().SwitchCheatManager(modpackage);
 }
 
@@ -82,7 +77,7 @@ function string StrValue0(optional string str, optional bool bForce)
 	local string outstr;
 
 	outstr = ModBridge().StrValue0(str, bForce);
-	InitModVals();
+	ModBridge().InitModVals(self);
 	return outstr;
 }
 
@@ -91,7 +86,7 @@ function string StrValue1(optional string str, optional bool bForce)
 	local string outstr;
 
 	outstr = ModBridge().StrValue1(str, bForce);
-	InitModVals();
+	ModBridge().InitModVals(self);
 	return outstr;
 }
 
@@ -100,34 +95,34 @@ function string StrValue2(optional string str, optional bool bForce)
 	local string outstr;
 
 	outstr = ModBridge().StrValue2(str, bForce);
-	InitModVals();
+	ModBridge().InitModVals(self);
 	return outstr;
 }
 
-function string IntValue0(optional int I = -1, optional bool bForce)
+function int IntValue0(optional int I = -1, optional bool bForce)
 {
 	local int outint;
 
 	outint = ModBridge().IntValue0(I, bForce);
-	InitModVals();
+	ModBridge().InitModVals(self);
 	return outint;
 }
 
-function string IntValue1(optional int I = -1, optional bool bForce)
+function int IntValue1(optional int I = -1, optional bool bForce)
 {
 	local int outint;
 
 	outint = ModBridge().IntValue1(I, bForce);
-	InitModVals();
+	ModBridge().InitModVals(self);
 	return outint;
 }
 
-function string IntValue2(optional int I = -1, optional bool bForce)
+function int IntValue2(optional int I = -1, optional bool bForce)
 {
 	local int outint;
 
 	outint = ModBridge().IntValue2(I, bForce);
-	InitModVals();
+	ModBridge().InitModVals(self);
 	return outint;
 }
 
@@ -136,7 +131,7 @@ function array<string> arrStrings(optional array<string> arrStr, optional bool b
 	local array<string> outarr;
 	
 	outarr = ModBridge().arrStrings(arrStr, bForce);
-	InitModVals();
+	ModBridge().InitModVals(self);
 	return outarr;
 }
 
@@ -145,7 +140,7 @@ function array<int> arrInts(optional array<int> arrInt, optional bool bForce)
 	local array<int> outarr;
 
 	outarr = ModBridge().arrInts(arrInt, bForce);
-	InitModVals();
+	ModBridge().InitModVals(self);
 	return outarr;
 }
 
@@ -154,7 +149,7 @@ function Object Object(optional Object inObj, optional bool bForce)
 	local Object outObj;
 
 	outObj = ModBridge().Object(inObj, bForce);
-	InitModVals();
+	ModBridge().InitModVals(self);
 	return outObj;
 }
 
@@ -163,7 +158,7 @@ function TTableMenu TMenu(optional TTableMenu menu, optional bool bForce)
 	local TTableMenu outtmenu;
 
 	outtmenu = ModBridge().TMenu(menu, bForce);
-	InitModVals();
+	ModBridge().InitModVals(self);
 	return outtmenu;
 }
 

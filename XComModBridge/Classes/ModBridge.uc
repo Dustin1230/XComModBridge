@@ -1,5 +1,33 @@
 Class ModBridge extends XComMod
- config(ModBridge);
+	dependson(ModBridgeMod)
+	config(ModBridge);
+
+struct RecordRecord
+{
+	var array<string> Tactical;
+	var array<string> Transport;
+	var array<string> Strategy;
+};
+
+struct RecordDestory
+{
+	var array<bool> Tactical;
+	var array<bool> Transport;
+	var array<bool> Strategy;
+};
+
+struct RecordNotDestory
+{
+	var array<bool> Tactical;
+	var array<bool> Transport;
+	var array<bool> Strategy;
+};
+
+struct hooksub
+{
+	var array<string> hookname;
+	var array< delegate<ModBridgeMod.hookType> > funcRef;
+};
 
 var string valStrValue0;
 var string valStrValue1;
@@ -13,57 +41,140 @@ var TTableMenu valTMenu;
 var Object valObject;
 var string functionName;
 var string functParas;
-var privatewrite bool m_bFromLoad;
+
+var private bool m_bFromSLoad;
+var private bool m_bFromTLoad;
+
 var string ModInitError;
 var bool bModReturn;
 var class<CheatManager> ModCheatClass;
-var privatewrite array<ModBridgeMod> MBMods;
-var privatewrite ModBridgeCheckpoint MBCheckpoint;
-var privatewrite array<ModBridgeMod> LoadedMods;
-var privatewrite array<string> LoadedModNames;
+
+var private array<ModBridgeMod> MBMods;
+var private ModBridgeCheckpoint MBCheckpoint;
+var private ModBridgeCheckpoint MBCheckpointWaitingForLoad;
+var private array<ModBridgeMod> LoadedMods;
+var private array<string> LoadedModNames;
+var private array<string> ModAddedBy;
+var private RecordRecord RecordAddedBy;
+var private RecordDestory DestoryRecords;
+var private RecordNotDestory NotDestoryRecords;
+
 var config bool verboseLog;
-var privatewrite config array<string> ModList;
+
+var private config array<string> ModList;
+
+var array<hooksub> hooksubs;
+var ModBridgeConsole MBConsole;
 
 function WorldInfo WorldInfo()
 {
 	return class'Engine'.static.GetCurrentWorldInfo();
 }
 
-function InitModBridgeVals(ModBridgeMod Mod)
+function protected InitModBridgeVals(ModBridgeMod Mod)
 {
-	valStrValue0	= Mod.valStrValue0;
-	valStrValue1	= Mod.valStrValue1;
-	valStrValue2	= Mod.valStrValue2;
-	valIntValue0	= Mod.valIntValue0;
-	valIntValue1	= Mod.valIntValue1;
-	valIntValue2	= Mod.valIntValue2;
+	valStrValue0    	= Mod.valStrValue0;
+	valStrValue1    	= Mod.valStrValue1;
+	valStrValue2    	= Mod.valStrValue2;
+	valIntValue0    	= Mod.valIntValue0;
+	valIntValue1    	= Mod.valIntValue1;
+	valIntValue2    	= Mod.valIntValue2;
 	valArrStr		= Mod.valArrStr;
 	valArrInt		= Mod.valArrInt;
-	valTMenu		= Mod.valTMenu;
+	valTMenu		    = Mod.valTMenu;
 	valObject       = Mod.valObject;
-	functionName	= Mod.functionName;
+	functionName	    = Mod.functionName;
 	functParas		= Mod.functParas;
-	ModInitError	= Mod.ModInitError;
+	ModInitError    	= Mod.ModInitError;
 	bModReturn		= Mod.bModReturn;
 	ModCheatClass	= Mod.ModCheatClass;
 	verboseLog		= Mod.verboseLog;
 }
 
-function Init()
+function InitModVals(ModBridgeMod Mod)
+{
+	local string CallingMod;
+	local int index;
+	local bool bFound;
+
+	CallingMod = GetCallingMod();
+
+	if(Left(CallingMod, InStr(CallingMod, ":")) != "XComModBridge.ModBridge")
+	{
+		if(Left(CallingMod, InStr(CallingMod, ".")) != string(Mod.Class.GetPackageName))
+		{
+			for(index=0; index<MBMods.Length; index++)
+			{
+				if(MBMods[index] == Mod)
+				{
+					if(Left(CallingMod, InStr(CallingMod, ".")) == ModAddedBy[index])
+					{
+						bFound = true;
+					}
+					break;
+				}
+			}
+			if(!bFound)
+			{
+				`Log("Error \"" $ CallingMod $ "\" is unathorised to InitModVals for \"" $ Mod $ "\"", verboseLog, 'ModBridge');
+				return;
+			}
+		}
+	}
+
+	Mod.valStrValue0 	= valStrValue0;
+	Mod.valStrValue1 	= valStrValue1;
+	Mod.valStrValue2 	= valStrValue2;
+	Mod.valIntValue0 	= valIntValue0;
+	Mod.valIntValue1 	= valIntValue1;
+	Mod.valIntValue2 	= valIntValue2;
+	Mod.valArrStr		= valArrStr;
+	Mod.valArrInt 		= valArrInt;
+	Mod.valTMenu 		= valTMenu;
+	Mod.valObject       = valObject;
+	Mod.functionName 	= functionName;
+	Mod.functParas 		= functParas;
+	Mod.m_bFromSLoad    = m_bFromSLoad;
+	Mod.m_bFromTLoad    = m_bFromTLoad;
+	Mod.ModCheatClass 	= ModCheatClass;
+	Mod.MBMods 			= MBMods;
+	Mod.ModList 		    = ModList;
+	Mod.verboseLog 		= verboseLog;
+
+	`Log("InitModVals for \"" $ Mod $ "\" done by \"" $ CallingMod $ "\"", verboseLog, 'ModBridge');
+}
+
+function StartMatch()
 {
 	local ModBridgeMod Mod;
-	local string ModName;
+	local string ModName, CalledBy;
 	local int i;
 	local bool bFound;
+
+	CalledBy = GetCallingMod();
+
+	if(CalledBy != "XComGame.XComGameInfo:InitGame")
+	{
+		`Log("Error, \"" $ CalledBy $ "\" unautherised to Init ModBridge", verboseLog, 'ModBridge');
+		return;
+	}
 
 	GetLoadStatus();
 
 	if(MBMods.Length > 0)
 	{
+		`log("Mod list dirty, performing cleanup", verboseLog, 'ModBridge');
 		foreach MBMods(Mod)
 		{
 			if(Mod != none)
+			{
+				`Log("Destorying " $ `ShowVar(Mod), verboseLog, 'ModBridge');
 				Mod.Destroy();
+			}
+			if(Mod != none)
+			{
+				`Log(`ShowVar(Mod) $ " not currently destroyed", verboseLog, 'ModBridge');
+			}
 		}
 		MBMods.Length = 0;
 	}
@@ -84,7 +195,10 @@ function Init()
 		ModName = "ModBridge|" $ string(Mod.Class.GetPackageName()) $ "." $ string(Mod.Class);
 		`Log(ModName @ "ModInit attempt", verboseLog, 'ModBridge');
 
+		InitModVals(MBMods[i]);
 		MBMods[i].StartMatch();
+		MBMods[i].ModInit();
+		InitModBridgeVals(MBMods[i]);
 			
 		`Log(ModName $ ", ModInitError= \"" $ ModInitError $ "\"", ModInitError != "", 'ModBridge');
 		`Log(ModName @ "ModInit Successful", (verboseLog && (ModInitError == "")), 'ModBridge');
@@ -116,6 +230,7 @@ function Init()
 		}
 	}
 
+	ModRecordActor("Transport", class'ModBridgeCheckpoint');
 	
 	`Log("Overwrite Checkpoint classes", verboseLog, 'ModBridge');
 
@@ -134,16 +249,70 @@ function Init()
 	functionName = "";
 }
 
-function ModError(string Error)
+function SetHookSub(string hookname, delegate<ModBridgeMod.hookType> funcRef)
 {
-	`Log("Mod Function \"" $ GetCallingMod() $ "\" Error=" @ Error, true, 'ModBridge');
+	local string CallingMod;
+	local int i, modnum;
+	local ModBridgeMod Mod;
+
+	CallingMod = GetCallingMod(4);
+	CallingMod = Left(CallingMod, InStr(CallingMod, ":"));
+	
+	modnum = -1;	
+
+	`Log(`ShowVar(CallingMod));
+
+	foreach MBMods(Mod, i)
+	{
+		`Log("Mod:'" $ string(Mod.Class.GetPackageName()) $ "." $ string(Mod.Class) $ "'");
+		if(CallingMod == (string(Mod.Class.GetPackageName()) $ "." $ string(Mod.Class)))
+		{
+			modnum = i;
+			break;
+		}
+	}
+	
+	if(modnum == -1)
+	{
+		`log("Error, Mod not found in SetHookSub",, 'ModBridge');
+		return;
+	}
+
+	if(hooksubs.Length < modnum+1)
+	{
+		hooksubs.Length = modnum+1;
+	}
+
+	hooksubs[modnum].hookname.AddItem(hookname);
+	hooksubs[modnum].funcRef.AddItem(funcRef);
+
 }
 
-function bool ModRecordActor(string Checkpoint, class<Actor> ActorClasstoRecord)
+function SetModList(array<ModBridgeMod> MBList)
+{
+	if(GetCallingMod() == "XComModBridge.ModBridgeActor:GetModList")
+	{
+		MBMods = MBList;
+	}
+	else
+	{
+		`Log("Error, \"" $ GetCallingMod() $ "is unautherised to SetModList",, 'ModBridge');
+	}
+}
+
+function ModError(string Error)
+{
+	`Log("Mod Function \"" $ GetCallingMod() $ "\" Error=" @ Error,, 'ModBridge');
+}
+
+function bool ModRecordActor(string Checkpoint, class<Actor> ActorClasstoRecord, optional bool bDontDestory, optional bool bDoNotDestory)
 {
 	local bool bFound;
- 
-	/**
+	local string ModPackage;
+
+	ModPackage = GetCallingMod();
+	ModPackage = Left(ModPackage, InStr(ModPackage, "."));
+
 	if(Checkpoint ~= "Tactical")
 	{
 		`Log("Adding Actor Class \"" $ string(ActorClasstoRecord) $ "\" to TacticalGame Checkpoint", verboseLog, 'ModBridge');
@@ -157,6 +326,18 @@ function bool ModRecordActor(string Checkpoint, class<Actor> ActorClasstoRecord)
 			class'Mod_Checkpoint_TacticalGame'.default.ActorClassesToRecord.AddItem(ActorClasstoRecord);
 			if(ClassIsChildOf(ActorClasstoRecord, class'ModBridgeMod'))
 				MBCheckpoint.Checkpoint_TacticalGameClasses.AddItem(class<ModBridgeMod>(ActorClasstoRecord));
+			RecordAddedBy.Tactical[class'Mod_Checkpoint_TacticalGame'.default.ActorClassesToRecord.Length-1] = ModPackage;
+			if(!bDontDestory)
+			{
+				class'Mod_Checkpoint_TacticalGame'.default.ActorClassesToDestroy.AddItem(ActorClasstoRecord);
+				DestoryRecords.Tactical[class'Mod_Checkpoint_TacticalGame'.default.ActorClassesToRecord.Length-1] = true;
+			}
+			if(bDoNotDestory)
+			{
+				class'Mod_Checkpoint_TacticalGame'.default.ActorClassesNotToDestroy.AddItem(ActorClasstoRecord);
+				NotDestoryRecords.Tactical[class'Mod_Checkpoint_TacticalGame'.default.ActorClassesToRecord.Length-1] = true;
+			}
+			MBCheckpoint.RecordAddedBy = RecordAddedBy;
 		}
 
 		if(bFound || class'Mod_Checkpoint_TacticalGame'.default.ActorClassesToRecord[class'Mod_Checkpoint_TacticalGame'.default.ActorClassesToRecord.Length-1] == ActorClasstoRecord)
@@ -176,6 +357,18 @@ function bool ModRecordActor(string Checkpoint, class<Actor> ActorClasstoRecord)
 			class'Mod_Checkpoint_StrategyTransport'.default.ActorClassesToRecord.AddItem(ActorClasstoRecord);
 			if(ClassIsChildOf(ActorClasstoRecord, class'ModBridgeMod'))
 				MBCheckpoint.Checkpoint_StrategyTransportClasses.AddItem(class<ModBridgeMod>(ActorClasstoRecord));
+			RecordAddedBy.Transport[class'Mod_Checkpoint_StrategyTransport'.default.ActorClassesToRecord.Length-1] = ModPackage;
+			if(!bDontDestory)
+			{
+				class'Mod_Checkpoint_StrategyTransport'.default.ActorClassesToDestroy.AddItem(ActorClasstoRecord);
+				DestoryRecords.Transport[class'Mod_Checkpoint_StrategyTransport'.default.ActorClassesToRecord.Length-1] = true;
+			}
+			if(bDoNotDestory)
+			{
+				class'Mod_Checkpoint_StrategyTransport'.default.ActorClassesNotToDestroy.AddItem(ActorClasstoRecord);
+				NotDestoryRecords.Transport[class'Mod_Checkpoint_StrategyTransport'.default.ActorClassesToRecord.Length-1] = true;
+			}
+			MBCheckpoint.RecordAddedBy = RecordAddedBy;
 		}
 			                                                                                                
 		if(bFound || class'Mod_Checkpoint_StrategyTransport'.default.ActorClassesToRecord[class'Mod_Checkpoint_StrategyTransport'.default.ActorClassesToRecord.Length-1] == ActorClasstoRecord)
@@ -196,6 +389,18 @@ function bool ModRecordActor(string Checkpoint, class<Actor> ActorClasstoRecord)
 				class'Mod_Checkpoint_StrategyGame'.default.ActorClassesToRecord.AddItem(ActorClasstoRecord);
 				if(ClassIsChildOf(ActorClasstoRecord, class'ModBridgeMod'))
 					MBCheckpoint.Checkpoint_StrategyGameClasses.AddItem(class<ModBridgeMod>(ActorClasstoRecord));
+				RecordAddedBy.Strategy[class'Mod_Checkpoint_StrategyGame'.default.ActorClassesToRecord.Length-1] = ModPackage;
+				if(!bDontDestory)
+				{
+					class'Mod_Checkpoint_StrategyGame'.default.ActorClassesToDestroy.AddItem(ActorClasstoRecord);
+					DestoryRecords.Strategy[class'Mod_Checkpoint_StrategyGame'.default.ActorClassesToRecord.Length-1] = true;
+				}
+				if(bDoNotDestory)
+				{
+					class'Mod_Checkpoint_StrategyGame'.default.ActorClassesNotToDestroy.AddItem(ActorClasstoRecord);
+					NotDestoryRecords.Strategy[class'Mod_Checkpoint_StrategyGame'.default.ActorClassesToRecord.Length-1] = true;
+				}
+				MBCheckpoint.RecordAddedBy = RecordAddedBy;
 			}
 
 			if(bFound || class'Mod_Checkpoint_StrategyGame'.default.ActorClassesToRecord[class'Mod_Checkpoint_StrategyGame'.default.ActorClassesToRecord.Length-1] == ActorClasstoRecord)
@@ -211,130 +416,267 @@ function bool ModRecordActor(string Checkpoint, class<Actor> ActorClasstoRecord)
 	{
 		`Log("ModRecordActor failed, invalid Checkpoint type specified.", verboseLog, 'ModBridge');
 	}
-	*/
 
 	return false;
 }
 
-function ModRemoveRecordActor(string Checkpoint, class<actor> ActorClassToRemove)
+function ModRemoveRecordedActor(string Checkpoint, class<actor> ActorClassToRemove)
 {
-	/**
+	local int index;
+	local string modpackage;
+	local bool bSuccess, indexFound;
+	
+	modpackage = GetCallingMod();
+	modpackage = Left(modpackage, InStr(modpackage, "."));
+
 	if(Checkpoint ~= "Tactical")
 	{
-		`Log("Removing Actor Class \"" $ string(ActorClassToRemove) $ "\" from TacticalGame Checkpoint", verboseLog, 'ModBridge');
+		index = class'Mod_Checkpoint_TacticalGame'.default.ActorClassesToRecord.Find(ActorClassToRemove);
+		
+		if(index != -1)
+		{
+			indexFound = true;
 
-		class'Mod_Checkpoint_TacticalGame'.default.ActorClassesToRecord.Remove(ActorClassToRemove);
-		if(ClassIsChildOf(ActorClasstoRecord, class'ModBridgeMod') && MBCheckpoint.Checkpoint_TacticalGameClasses.Find(class<ModBridgeMod>(ActorClassToRemove)) != -1)
-			MBCheckpoint.Checkpoint_TacticalGameClasses.RemoveItem(class<ModBridgeMod>(ActorClassToRemove));
+			if(string(ActorClassToRemove.GetPackageName()) == modpackage || RecordAddedBy.Tactical[index] == modpackage)
+			{
+				`Log("Removing Actor Class \"" $ string(ActorClassToRemove) $ "\" from TacticalGame Checkpoint", verboseLog, 'ModBridge');
+
+				class'Mod_Checkpoint_TacticalGame'.default.ActorClassesToRecord[index] = none;
+				if(ClassIsChildOf(ActorClasstoRemove, class'ModBridgeMod') && MBCheckpoint.Checkpoint_TacticalGameClasses.Find(class<ModBridgeMod>(ActorClassToRemove)) != -1)
+					MBCheckpoint.Checkpoint_TacticalGameClasses.RemoveItem(class<ModBridgeMod>(ActorClassToRemove));
+				if(NotDestoryRecords.Tactical[index])
+				{
+					class'Mod_Checkpoint_TacticalGame'.default.ActorClassesNotToDestroy.RemoveItem(ActorClassToRemove);
+					NotDestoryRecords.Tactical[index] = false;
+				}
+				DestoryRecords.Tactical[index] = false;
+				RecordAddedBy.Tactical[index] = "";
+				MBCheckpoint.RecordAddedBy = RecordAddedBy;
+				bSuccess = true;
+			}
+		}
+		
 	}
 	else if(Checkpoint ~= "Transport")
 	{
-		`Log("Removing Actor Class \"" $ string(ActorClassToRemove) $ "\" from StrategyTransport Checkpoint", verboseLog, 'ModBridge');
+		index = class'Mod_Checkpoint_StrategyTransport'.default.ActorClassesToRecord.Find(ActorClassToRemove);
+		
+		if(index != -1)
+		{
+			indexFound = true;
 
-		class'Mod_Checkpoint_StrategyTransport'.default.ActorClassesToRecord.Remove(ActorClassToRemove);
-		if(ClassIsChildOf(ActorClasstoRecord, class'ModBridgeMod') && MBCheckpoint.Checkpoint_StrategyTransportClasses.Find(class<ModBridgeMod>(ActorClassToRemove)) != -1)
-			MBCheckpoint.Checkpoint_StrategyTransportClasses.RemoveItem(class<ModBridgeMod>(ActorClassToRemove));
+			if(string(ActorClassToRemove.GetPackageName()) == modpackage || RecordAddedBy.Transport[index] == modpackage)
+			{
+				`Log("Removing Actor Class \"" $ string(ActorClassToRemove) $ "\" from StrategyTransport Checkpoint", verboseLog, 'ModBridge');
+
+				class'Mod_Checkpoint_StrategyTransport'.default.ActorClassesToRecord.RemoveItem(ActorClassToRemove);
+				if(ClassIsChildOf(ActorClasstoRemove, class'ModBridgeMod') && MBCheckpoint.Checkpoint_StrategyTransportClasses.Find(class<ModBridgeMod>(ActorClassToRemove)) != -1)
+					MBCheckpoint.Checkpoint_StrategyTransportClasses.RemoveItem(class<ModBridgeMod>(ActorClassToRemove));
+				if(NotDestoryRecords.Transport[index])
+				{
+					class'Mod_Checkpoint_StrategyTransport'.default.ActorClassesNotToDestroy.RemoveItem(ActorClassToRemove);
+					NotDestoryRecords.Transport[index] = false;
+				}
+				DestoryRecords.Transport[index] = false;
+				RecordAddedBy.Transport[index] = "";
+				MBCheckpoint.RecordAddedBy = RecordAddedBy;
+				bSuccess = true;
+			}
+		}
 	}
 	else if(Checkpoint ~= "Strategy")
 	{
 		if(XComHeadquartersGame(XComGameInfo(Outer)) != none)
 		{
-			`Log("Removing Actor Class \"" $ string(ActorClassToRemove) $ "\" from StrategyGame Checkpoint", verboseLog, 'ModBridge');
+			index = class'Mod_Checkpoint_StrategyGame'.default.ActorClassesToRecord.Find(ActorClassToRemove);
+		
+			if(index != -1)
+			{
+				indexFound = true;
 
-			class'Mod_Checkpoint_StrategyGame'.default.ActorClassesToRecord.Remove(ActorClassToRemove);
-			if(ClassIsChildOf(ActorClasstoRecord, class'ModBridgeMod') && MBCheckpoint.Checkpoint_StrategyGameClasses.Find(class<ModBridgeMod>(ActorClassToRemove)) != -1)
-				MBCheckpoint.Checkpoint_StrategyGameClasses.RemoveItem(class<ModBridgeMod>(ActorClassToRemove));
+				if(string(ActorClassToRemove.GetPackageName()) == modpackage || RecordAddedBy.Strategy[index] == modpackage)
+				{
+					`Log("Removing Actor Class \"" $ string(ActorClassToRemove) $ "\" from StrategyGame Checkpoint", verboseLog, 'ModBridge');
+
+					class'Mod_Checkpoint_StrategyGame'.default.ActorClassesToRecord.RemoveItem(ActorClassToRemove);
+					if(ClassIsChildOf(ActorClasstoRemove, class'ModBridgeMod') && MBCheckpoint.Checkpoint_StrategyGameClasses.Find(class<ModBridgeMod>(ActorClassToRemove)) != -1)
+						MBCheckpoint.Checkpoint_StrategyGameClasses.RemoveItem(class<ModBridgeMod>(ActorClassToRemove));
+					if(NotDestoryRecords.Strategy[index])
+					{
+						class'Mod_Checkpoint_StrategyGame'.default.ActorClassesNotToDestroy.RemoveItem(ActorClassToRemove);
+						NotDestoryRecords.Strategy[index] = false;
+					}
+					DestoryRecords.Strategy[index] = false;
+					RecordAddedBy.Strategy[index] = "";
+					MBCheckpoint.RecordAddedBy = RecordAddedBy;
+					bSuccess = true;
+				}
+			}
 		}
 		else
 		{
-			`Log("ModRemoveRecordActor failed, Strategy Checkpoint specified while not in StrategyGame.", verboseLog, 'ModBridge');
+			`Log("ModRemoveRecordedActor failed, Strategy Checkpoint specified while not in StrategyGame.", verboseLog, 'ModBridge');
+			return;
+		}
+	}
+	else
+	{ 
+		`Log("ModRemoveRecordedActor failed, invaild Checkpoint type specified.", verboseLog, 'ModBridge');
+	}
+
+	if(!bSuccess)
+	{
+		if(indexFound)
+		{
+			`Log("Error, \"" $ modpackage $ "\" is unauthorised to Remove Actor \"" $ string(ActorClassToRemove) $ "\" from Record List",, 'ModBridge');
+		}
+		else
+		{
+			`Log("ModRemoveRecordedActor failed, Actor not found in specified Checkpoint Record List", verboseLog, 'ModBridge');
+		}
+	}
+}
+
+function ModRemoveDestoryActor(string Checkpoint, class<actor> ActorClassToRemove)
+{
+	if(Checkpoint ~= "Tactical")
+	{
+		if(class'Mod_Checkpoint_TacticalGame'.default.ActorClassesToRecord.Find(ActorClassToRemove) == -1)
+			class'Mod_Checkpoint_TacticalGame'.default.ActorClassesToDestroy.RemoveItem(ActorClassToRemove);
+	}
+	else if(Checkpoint ~= "Transport")
+	{
+		if(class'Mod_Checkpoint_StrategyTransport'.default.ActorClassesToRecord.Find(ActorClassToRemove) == -1)
+			class'Mod_Checkpoint_StrategyTransport'.default.ActorClassesToDestroy.RemoveItem(ActorClassToRemove);
+
+	}
+	else if(Checkpoint ~= "Strategy")
+	{
+		if(XComHeadquartersGame(XComGameInfo(Outer)) != none)
+		{
+			if(class'Mod_Checkpoint_StrategyGame'.default.ActorClassesToRecord.Find(ActorClassToRemove) == -1)
+				class'Mod_Checkpoint_StrategyGame'.default.ActorClassesToDestroy.RemoveItem(ActorClassToRemove);
+		}
+
+	}
+}
+
+function bool AddModToList(ModBridgeMod ModToAdd)
+{
+	local string modpackage;
+
+	modpackage = GetCallingMod();
+	modpackage = Left(modpackage, InStr(modpackage, "."));
+	
+	if(ModToAdd != none)
+	{
+		if(MBMods.Find(ModToAdd) == -1)
+		{
+			`log("Mod \"" $ string(ModToAdd.Class.GetPackageName()) $ "." $ string(ModToAdd.Class) $ "\" added to modlist by \"" $ modpackage $ "\"", verboseLog, 'ModBridge');
+		
+			MBMods.AddItem(ModToAdd);
+			ModAddedBy[MBMods.Length-1] = modpackage;
+			return true;
+		}
+		else
+		{
+			`log("Mod \"" $ string(ModToAdd.Class.GetPackageName()) $ "." $ string(ModToAdd.Class) $ "\" attempted to be added to modlist by \"" $ modpackage $ "\" was skipped because it is already in modlist", verboseLog, 'ModBridge');
+			return true;
 		}
 	}
 	else
 	{
-		`Log("ModRemoveRecordActor failed, invaild Checkpoint type specified.", verboseLog, 'ModBridge');
+		`log("Failed to Add Mod to list by \"" $ modpackage $ "\" ModToAdd == none",, 'ModBridge');
+		return false;
 	}
-	*/
 }
 
-function AddModToList(ModBridgeMod ModToAdd)
+function bool RemoveModFromList(ModBridgeMod ModToRemove)
 {
-	
-}
+	local string modpackage;
+	local int modposition;
 
-function RemoveModFromList(ModBridgeMod ModToRemove)
-{
+	modpackage = GetCallingMod();
+	modpackage = Left(modpackage, InStr(modpackage, "."));
 	
+	if(ModToRemove != none)
+	{
+		modposition = MBMods.Find(ModToRemove);
+		if(modposition != -1)
+		{
+			if(string(ModToRemove.Class.GetPackageName()) == modpackage || ModAddedBy[modposition] == modpackage)
+			{
+				`log("Mod \"" $ string(ModToRemove.Class.GetPackageName()) $ "." $ string(ModToRemove.Class) $ "\" removed from modlist by \"" $ modpackage $ "\"", verboseLog, 'ModBridge');
+				
+				MBMods[modposition] = none;
+				ModAddedBy[modposition] = "";
+				return true;
+			}
+			else
+			{
+				`log("Mod \"" $ string(ModToRemove.Class.GetPackageName()) $ "." $ string(ModToRemove.Class) $ "\" attempted to be removed from modlist by \"" $ modpackage $ "\" failed because instigator is unautherized",, 'ModBridge');
+				return false;
+			}
+		}
+		else
+		{
+			`log("Mod \"" $ string(ModToRemove.Class.GetPackageName()) $ "." $ string(ModToRemove.Class) $ "\" attempted to be removed from modlist by \"" $ modpackage $ "\" was skipped because it is not in modlist", verboseLog, 'ModBridge');
+			return true;
+		}
+	}
+	else
+	{
+		`log("Failed to remove mod from list by \"" $ modpackage $ "\" ModToRemove == none",, 'ModBridge');
+		return false;
+	}
+
 }
 
 function GetLoadStatus()
 {
 	local XComOnlineEventMgr OEM;
-	local ModBridgeCheckpoint MBC;
-	local ModBridgeMod Mod;
-	local array< class<actor> > CheckpointClasses;
+
+	`log("Started GetLoadStatus", verboseLog, 'ModBridge');
 
 	OEM = XComOnlineEventMgr(GameEngine(class'Engine'.static.GetEngine()).OnlineEventManager);
 
-	if(OEM.bPerformingStandardLoad || OEM.bPerformingTransferLoad)
+	m_bFromSLoad = OEM.bPerformingStandardLoad;
+	m_bFromTLoad = OEM.bPerformingTransferLoad;
+
+	if(m_bFromSLoad || m_bFromTLoad)
 	{
-		m_bFromLoad = true;
-		foreach WorldInfo().DynamicActors(class'ModBridgeCheckpoint', MBC)
-		{
-			break;
-		}
-		MBCheckpoint = MBC;
-
-		if(OEM.bPerformingStandardLoad)
-		{
-			if(XComHeadquartersGame(Outer) != none)
-			{
-				CheckpointClasses = MBC.Checkpoint_StrategyGameClasses;
-			}
-			else if(XComTacticalGame(Outer) != none)
-			{
-				CheckpointClasses = MBC.Checkpoint_TacticalGameClasses;
-			}
-		}
-		else if(OEM.bPerformingTransferLoad)
-		{
-			CheckpointClasses = MBC.Checkpoint_StrategyTransportClasses;
-		}
-
-		foreach WorldInfo().DynamicActors(class'ModBridgeMod', Mod)
-		{
-			if(CheckpointClasses.Find(Mod.Class) != -1)
-			{
-				LoadedMods.AddItem(Mod);
-				LoadedModNames.AddItem(string(Mod.Class.GetPackageName()) $ "." $ string(Mod.Class));
-				if(MBMods.Find(Mod) != -1)
-				{
-					MBMods.RemoveItem(Mod);
-				}
-			}
-		}
+		`log("loaded game detected", verboseLog, 'ModBridge');
+		
+		MBCheckpoint = WorldInfo().Spawn(class'ModBridgeCheckpoint');
 	}
 	else
 	{
+		`log("not loaded game, spawning MBCheckpoint", verboseLog, 'ModBridge');
 		MBCheckpoint = WorldInfo().Spawn(class'ModBridgeCheckpoint');
-		m_bFromLoad = false;
 	}
+	
+	`log(`ShowVar(MBCheckpoint), verboseLog, 'ModBridge');
+	
 }
 
 
-
+/**
+ * Overwrites currently used cheat classes with ModBridge ones. 
+ * Used to replace base classes on init or to go back to modbridge defaults.
+ */
 function OverwriteCheatClass()
 {
 	local WorldInfo WI;
 	local PlayerController PC;
+	local Engine GameEngine;
 
 	WI = class'Engine'.static.GetCurrentWorldInfo();
 	PC = WI.GetALocalPlayerController();
-
+	
 	if(PC == none)
 		return;
-
-
+	
+	
 	if(WI.Game.IsTimerActive('OverwriteCheatClass', self))
 	{
 		WI.Game.ClearTimer('OverwriteCheatClass', self);
@@ -344,7 +686,7 @@ function OverwriteCheatClass()
 	{
 		`Log("Switching to base Mod Cheat class", verboseLog, 'ModBridge');
 	}
-
+	
 	if(PC.IsA('XComShellController'))
 	{
 		`Log("Shell detected, using ShellCheatManager", verboseLog, 'ModBridge');
@@ -364,8 +706,59 @@ function OverwriteCheatClass()
 		PC.CheatManager = new (XComTacticalController(PC)) class'Mod_TacticalCheatManager';
 	}
 
+	//WorldInfo().Game.SetTimer(1.0, true, 'RDC', self);
+
+	GameEngine = class'Engine'.static.GetEngine();
+
+	GameEngine.ConsoleClass = class'ModBridgeConsole';
+	GameEngine.ConsoleClassName = "XComModBridge.ModBridgeConsole";
+	MBConsole = new (GameEngine.GameViewport) class'ModBridgeConsole';
+	GameEngine.GameViewport.ViewportConsole = MBConsole;
+	GameEngine.GameViewport.InsertInteraction(MBConsole, 0);
 }
 
+function RDC()
+{
+	if(LocalPlayer(WorldInfo().GetALocalPlayerController().Player).ViewportClient.ViewportConsole.AutoCompleteList.Length > 0)
+	{
+		RemoveDupCommands("SwitchCheatManager");
+		RemoveDupCommands("TestModBridge");
+	}
+}
+
+function RemoveDupCommands(string Command)
+{
+	local WorldInfo WI;
+	local PlayerController PC;
+	local int i, j, len;
+
+	WI = class'Engine'.static.GetCurrentWorldInfo();
+	PC = WI.GetALocalPlayerController();
+	len = LocalPlayer(PC.Player).ViewportClient.ViewportConsole.AutoCompleteList.Length;
+
+	if(WI.Game.IsTimerActive('RDC', self))
+	{
+		WI.Game.ClearTimer('RDC', self);
+	}
+	
+	for(i=0; i<len; i++)
+	{
+		if(j == 3)
+			break;
+		if(InStr(LocalPlayer(PC.Player).ViewportClient.ViewportConsole.AutoCompleteList[i].Command, Command) != -1)
+		{
+			LocalPlayer(PC.Player).ViewportClient.ViewportConsole.AutoCompleteList.Remove(i, 1);
+			++ j;
+			-- i;
+		}
+	}
+}
+
+/**
+ * Swtiches which CheatManager Object the game uses to look for exec functions.
+ * 
+ * @param modpackage    Specifies which mod package to search in to look for Cheat class. case sensitive.
+ */
 function SwitchCheatManager(string modpackage)
 {
 	local bool bFound;
@@ -429,7 +822,7 @@ function SwitchCheatManager(string modpackage)
 				functParas = "Shell";
 				if(Mod != none)
 				{
-					Mod.InitModVals();
+					InitModVals(Mod);
 					Mod.StartMatch();
 					InitModBridgeVals(Mod);
 				}
@@ -450,7 +843,7 @@ function SwitchCheatManager(string modpackage)
 			functParas = "Strategy";
 			if(Mod != none)
 			{
-				Mod.InitModVals();
+				InitModVals(Mod);
 				Mod.StartMatch();
 				InitModBridgeVals(Mod);
 			}
@@ -470,7 +863,7 @@ function SwitchCheatManager(string modpackage)
 			functParas = "Tactical";
 			if(Mod != none)
 			{
-				Mod.InitModVals();
+				InitModVals(Mod);
 				Mod.StartMatch();
 				InitModBridgeVals(Mod);
 			}
@@ -524,7 +917,7 @@ function Actor GetActor(string ActorName, class<Actor> BaseClass, optional strin
 
     if(Iterator == "Dynamic")
     {
-        foreach DynamicActors(BaseClass, kActor)
+        foreach WorldInfo().DynamicActors(BaseClass, kActor)
         {
             if(string(kActor) == ActorName)
             {
@@ -534,7 +927,7 @@ function Actor GetActor(string ActorName, class<Actor> BaseClass, optional strin
     }
     else if(Iterator == "All")
     {
-        foreach AllActors(BaseClass, kActor)
+        foreach WorldInfo().AllActors(BaseClass, kActor)
         {
             if(string(kActor) == ActorName)
             {
@@ -549,10 +942,11 @@ function Actor GetActor(string ActorName, class<Actor> BaseClass, optional strin
         {
             if(string(kActor) == ActorName)
             {
-                tempActor.Destory();
+                tempActor.Destroy();
                 return kActor;
             }
         }
+        tempActor.Destroy();
     }
     else
     {
@@ -564,7 +958,7 @@ function string GetCallingMod(optional int backlevels = 3)
 {
 	local array<string> arrStr;
 
-	arrStr = SplitString(GetScriptTrace(), "Function ");
+	arrStr = class'Object'.static.SplitString(GetScriptTrace(), "Function ");
 	return left(arrStr[arrStr.Length-backlevels], Len(arrStr[arrStr.Length-backlevels])-2);
 }
 
@@ -580,16 +974,8 @@ function AssignMods()
 
 	foreach ModList(ModName, i)
 	{
-		if(LoadedModNames.Find(ModName) != -1)
-		{
-			`Log( "Adding Saved Mod \"" $ "ModBridge|" $ ModName $ "\" to modlist", verboseLog, 'ModBridge');
-			Mod = LoadedMods(LoadedModNames(ModName));
-		}
-		else
-		{
-			`Log( "Loading \"" $ "ModBridge|" $ ModName $ "\" into modlist", verboseLog, 'ModBridge');
-			Mod = WorldInfo().Spawn(class<ModBridgeMod>(DynamicLoadObject(ModName, class'Class')));
-		}
+		`Log( "Loading \"" $ "ModBridge|" $ ModName $ "\" into modlist", verboseLog, 'ModBridge');
+		Mod = WorldInfo().Spawn(class<ModBridgeMod>(DynamicLoadObject(ModName, class'Class')));
 
 		`Log( "Error \"" $ "ModBridge|" $ ModName $ "\" could not be loaded correctly", Mod == none, 'ModBridge');
 		
@@ -625,7 +1011,7 @@ function AssignMods()
 
 }
 
-function ModsStartMatch()
+function ModsStartMatch(string funcName, string paras)
 {
 
 	local ModBridgeMod Mod;
@@ -638,10 +1024,12 @@ function ModsStartMatch()
 	{
 		if(Mod == none)
 			continue;
-
+		
+		functionName = funcName;
+		functParas = paras;
 		ModName = "ModBridge|" $ string(Mod.Class.GetPackageName()) $ "." $ string(Mod.Class);
 		`Log("Executing StartMatch function in \"" $ ModName $ "\"", verboseLog, 'ModBridge');
-		MBMods[i].InitModVals();
+		InitModVals(MBMods[i]);
 		MBMods[i].StartMatch();
 		InitModBridgeVals(MBMods[i]);
 		if(bModReturn)
@@ -774,14 +1162,14 @@ function array<string> arrStrings(optional array<string> arrStr, optional bool b
 	if(arrStr.Length == 0 && !bForce)
 	{
 		JoinArray(valArrStr, sArray);
-		`Log("\"" $ GetCallingMod() $ "\" accessed return " $ `ShowVar(sArray, arrInts), verboseLog, 'ModBridge');
+		`Log("\"" $ GetCallingMod() $ "\" accessed return " $ `ShowVar(sArray, arrStrings), verboseLog, 'ModBridge');
 
 		return valArrStr;
 	}
 	else
 	{
 		JoinArray(arrStr, sArray);
-		`Log("\"" $ GetCallingMod() $ "\" accessed store " $ `ShowVar(sArray, arrInts) $ ", " $ `ShowVar(bForce), verboseLog, 'ModBridge');
+		`Log("\"" $ GetCallingMod() $ "\" accessed store " $ `ShowVar(sArray, arrStrings) $ ", " $ `ShowVar(bForce), verboseLog, 'ModBridge');
 
 		valArrStr = arrStr;
 		arrStr.Length = 0;
@@ -807,7 +1195,7 @@ function array<int> arrInts(optional array<int> arrInt, optional bool bForce)
 				}
 				sArray $= string(valArrInt[I]);
 			}
-			`Log("\"" $ GetCallingMod() $ "\" accessed return " $ `ShowVar(sArray, arrInts), true, 'ModBridge');
+			`Log("\"" $ GetCallingMod() $ "\" accessed return " $ `ShowVar(sArray, arrInts),, 'ModBridge');
 		}
 		return valArrInt;
 	}
@@ -815,7 +1203,7 @@ function array<int> arrInts(optional array<int> arrInt, optional bool bForce)
 	{
 		if(verboseLog)
 		{
-			for(I=0; I < arrInt.Length; I++)
+			for(I=0; I<arrInt.Length; I++)
 			{
 				if(sArray != "")
 				{
@@ -823,7 +1211,7 @@ function array<int> arrInts(optional array<int> arrInt, optional bool bForce)
 				}
 				sArray $= string(arrInt[I]);
 			}
-			`Log("\"" $ GetCallingMod() $ "\" accessed store " $ `ShowVar(sArray, arrInts) $ ", " $ `ShowVar(bForce), true, 'ModBridge');
+			`Log("\"" $ GetCallingMod() $ "\" accessed store " $ `ShowVar(sArray, arrInts) $ ", " $ `ShowVar(bForce),, 'ModBridge');
 		}
 		valArrInt = arrInt;
 		arrInt.Length = 0;
@@ -833,7 +1221,7 @@ function array<int> arrInts(optional array<int> arrInt, optional bool bForce)
 
 function Object Object(optional Object inObj, optional bool bForce)
 {
-	if(inObj != none && !bForce)
+	if(inObj == none && !bForce)
 	{
 		`Log("\"" $ GetCallingMod() $ "\" accessed return " $ `ShowVar(valObject, Object), verboseLog, 'ModBridge');
 		return valObject;
@@ -841,6 +1229,7 @@ function Object Object(optional Object inObj, optional bool bForce)
 	else
 	{
 		`Log("\"" $ GetCallingMod() $ "\" accessed store " $ `ShowVar(inObj, Object) $ ", " $ `ShowVar(bForce), verboseLog, 'ModBridge');
+		valObject = inObj;
 		return none;
 	}
 }
@@ -863,6 +1252,23 @@ function TTableMenu TMenu(optional TTableMenu menu, optional bool bForce)
 	}
 }
 
+function hooksubtest(string hookname, optional string funcName, optional string paras)
+{
+	local int i, j;
+
+	for(i=0; i<hooksubs.Length; i++)
+	{
+		for(j=0; j<hooksubs[i].hookname.Length; j++)
+		{
+			if(hooksubs[i].hookname[j] == hookname)
+			{
+				MBMods[i].hook = hooksubs[i].funcRef[j];
+				MBMods[i].hook(funcName, paras);
+			}
+		}
+	}
+}
+
 
 function Object Mods(string ModName, optional string funcName, optional string paras)
 {
@@ -878,7 +1284,8 @@ function Object Mods(string ModName, optional string funcName, optional string p
 
 	if(ModName == "")
 	{
-		`Log("Error, ModName not specified", true, 'ModBridge');
+		`Log("Error, ModName not specified",, 'ModBridge');
+		ScriptTrace();
 		return none;
 	}
 
@@ -904,7 +1311,8 @@ function Object Mods(string ModName, optional string funcName, optional string p
 		}
 		else
 		{
-			`Log("Mod number" @ ModName @ "is out of range", true, 'ModBridge');
+			`Log("Mod number" @ ModName @ "is out of range",, 'ModBridge');
+			ScriptTrace();
 		}
 		`Log("Mod number" @ ModName @ "is \"" $ mod $ "\"", bFound, 'ModBridge');
 		bFound = false;
@@ -937,7 +1345,8 @@ function Object Mods(string ModName, optional string funcName, optional string p
 
 		if(!bFound)
 		{
-			`Log("Error, ModName \"" $ ModName $ "\" not found", true, 'ModBridge');
+			`Log("Error, ModName \"" $ ModName $ "\" not found",, 'ModBridge');
+			ScriptTrace();
 			return none;
 		}
 
@@ -957,7 +1366,7 @@ function Object Mods(string ModName, optional string funcName, optional string p
 				i = XComGameInfo(outer).ModNames.Find(ModName) + MBMods.Length;
 			}
 
-			`Log("Mod \"" $ ModName $ "\" is mod number" @ string(i), true, 'ModBridge');
+			`Log("Mod \"" $ ModName $ "\" is mod number" @ string(i),, 'ModBridge');
 		}
 
 		if(!(funcName == " " || funcName == ""))
@@ -967,7 +1376,7 @@ function Object Mods(string ModName, optional string funcName, optional string p
 			if(ModName == "AllMods")
 			{
 				`Log("Looping over all Mods", verboseLog, 'ModBridge');
-				ModsStartMatch();
+				ModsStartMatch(funcName, paras);
 			}
 			else
 			{
@@ -978,7 +1387,7 @@ function Object Mods(string ModName, optional string funcName, optional string p
 					{
 						mod = "ModBridge|" $ string(MBMod.Class.GetPackageName()) $ "." $ string(MBMod.Class);
 						`Log("Executing \"" $ mod $ "\":StartMatch", verboseLog, 'ModBridge');
-						MBMods[i].InitModVals();
+						InitModVals(MBMods[i]);
 						MBMods[i].StartMatch();
 						InitModBridgeVals(MBMods[i]);
 						bFound = true;
@@ -1020,5 +1429,5 @@ function Object Mods(string ModName, optional string funcName, optional string p
 			}
 		}
 	}
-	`Log("Error: end of ModBridge.Mods function, this shouldn't appear, please contact ModBridge maintainer", true, 'ModBridge');
+	`Log("Error: end of ModBridge.Mods function, this shouldn't appear, please contact ModBridge maintainer",, 'ModBridge');
 }

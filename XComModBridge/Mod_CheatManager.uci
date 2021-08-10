@@ -1,4 +1,197 @@
+function ModBridge MB()
+{
+	return ModBridge(XComGameInfo(class'Engine'.static.GetCurrentWorldInfo().Game).Mods[0]);
+}
+
+exec function TestModBridgeDelagates(string ModName, optional string funcName, optional string paras)
+{
+	MB().hooksubtest(ModName, funcName, paras);
+}
+
+exec function TestModBridge(string ModName, optional string funcName, optional string paras)
+{
+	MB().Mods(ModName, funcName, paras);
+}
+
+exec function PrintCallingMod(optional int backlevels = -1)
+{
+	if(backlevels == -1)
+	{
+		`log(MB().GetCallingMod());
+	}
+	else
+	{
+		`log(MB().GetCallingMod(backlevels));
+	}
+}
+
+exec function SetModBridgeVars(string VarName, string Value)
+{
+	local array<int> intarray;
+	local array<string> strarray;
+	local int i;
+
+	switch(locs(VarName))
+	{
+		case "intvalue0":
+			MB().IntValue0(int(Value), true);
+		
+		case "intvalue1":
+			MB().IntValue1(int(Value), true);
+		
+		case "intvalue2":
+			MB().IntValue2(int(Value), true);
+		
+
+			
+		case "strvalue0":
+			MB().StrValue0(Value, true);
+		
+		case "strvalue1":
+			MB().StrValue1(Value, true);
+
+		case "strvalue2":
+			MB().StrValue2(Value, true);
+
+
+
+		case "arrints":
+			ParseStringIntoArray(Value, strarray, ",", false);
+			for(i=0; i<strarray.length; i++)
+			{
+				intarray.additem(int(strarray[i]));
+				MB().arrInts(intarray, true);
+			}
+
+
+		case "arrstrings":
+			ParseStringIntoArray(Value, strarray, ",", false);
+			MB().arrStrings(strarray, true);
+
+		default:
+			`log("ERROR: SetModBridgeVars:" @ `ShowVar(VarName) @ "not recognised",, 'ModBridge');
+	}
+		
+}
+
+exec function GetModBridgeVars(string VarName, string Value)
+{
+	local array<int> intarray;
+	local int i, j;
+	local string sArray;
+	local TTableMenu lmenu;
+
+	switch(locs(VarName))
+	{
+		case "intvalue0":
+			`log("GetModBridgeVars: IntValue0():'" $ string(MB().IntValue0()) $ "'",, 'ModBridge');
+		
+		case "intvalue1":
+			`log("GetModBridgeVars: IntValue1():'" $ string(MB().IntValue1()) $ "'",, 'ModBridge');
+		
+		case "intvalue2":
+			`log("GetModBridgeVars: IntValue2():'" $ string(MB().IntValue2()) $ "'",, 'ModBridge');
+		
+
+			
+		case "strvalue0":
+			`log("GetModBridgeVars: StrValue0():'" $ MB().StrValue0() $ "'",, 'ModBridge');
+		
+		case "strvalue1":
+			`log("GetModBridgeVars: StrValue1():'" $ MB().StrValue1() $ "'",, 'ModBridge');
+
+		case "strvalue2":
+			`log("GetModBridgeVars: StrValue2():'" $ MB().StrValue2() $ "'",, 'ModBridge');
+
+
+
+		case "arrints":
+			intarray = MB().arrInts();
+			for(i=0; i<intarray.length; i++)
+			{
+				if(sArray != "") sArray $= ",";
+				sArray $= string(intarray[i]);
+			}
+			`log("GetModBridgeVars: arrInts():'" $ sArray $ "'",, 'ModBridge');
+
+
+
+		case "arrstrings":
+			JoinArray(MB().arrStrings(), sArray);
+			`log("GetModBridgeVars: arrStrings():'" $ sArray $ "'",, 'ModBridge');
+
+
+
+		case "object":
+			`log("GetModBridgeVars:" @ `ShowVar(MB().Object(), Object()),, 'ModBridge');
+
+
+		case "tmenu":
+			if( MB().TMenu() == lmenu )
+			{
+				`log("GetModBridgeVars: TMenu is blank",, 'ModBridge');
+			}
+			else
+			{
+				lmenu = MB().TMenu();
+				sArray = "\nTMenu:\n{\n\tarrCategories:(";
+				
+				for(i=0; i<lmenu.arrCategories.Length; i++)
+				{
+					sArray $= string(lmenu.arrCategories[i]);
+					if(i < lmenu.arrCategories.Length-1) sArray $= ",";
+				}
+
+				sArray $= ")";
+
+				for(i=0; i<lmenu.arrOptions.Length; i++)
+				{
+					sArray $= "\n\tarrOptions[" $ string(i) $ "]:\n\t{\n\t\tarrStates:(";
+					for(j=0; j<lmenu.arrOptions[i].arrStates.Length; j++)
+					{
+						sArray $= string(lmenu.arrOptions[i].arrStates[j]);
+						if(j < lmenu.arrOptions[i].arrStates.Length-1) sArray $= ",";
+					}
+
+					sArray $= ")\n\t\tarrStrings:(";
+
+					for(j=0; j<lmenu.arrOptions[i].arrStrings.Length; j++)
+					{
+						sArray $= lmenu.arrOptions[i].arrStrings[j];
+						if(j < lmenu.arrOptions[i].arrStrings.Length-1) sArray $= ",";
+					}
+					sArray $= ")\n\t\tiState:'" $ string(lmenu.arrOptions[i].iState) $ "'\n\t\tstrHelp:'" $ lmenu.arrOptions[i].strHelp $ "'\n\t}";
+				}
+
+				sArray $= "\n\tbTakesNoInput:'" $ string(lmenu.bTakesNoInput) $ "'\n\tkHeader:\n\t{\n\t\tarrStates:(";
+
+				for(i=0; i<lmenu.kHeader.arrStates.Length; i++)
+				{
+					sArray $= string(lmenu.kHeader.arrStates[i]);
+					if(i < lmenu.kHeader.arrStates.Length-1) sArray $= ",";
+				}
+
+				sArray $= ")\n\t\tarrStrings:(";
+
+				for(i=0; i<lmenu.kHeader.arrStrings.Length; i++)
+				{
+					sArray $= lmenu.kHeader.arrStrings[i];
+					if(i < lmenu.kHeader.arrStrings.Length-1) sArray $= ",";
+				}
+
+				sArray $= ")\n\t}\n}";
+
+				`log("GetModBridgeVars: " $ sArray,, 'ModBridge');
+			}
+
+
+		default:
+			`log("ERROR: GetModBridgeVars:" @ `ShowVar(VarName) @ "not recognised",, 'ModBridge');
+	}
+		
+}
+
 exec function SwitchCheatManager(optional string ModPackage)
 {
-	ModBridge(XComGameInfo(class'Engine'.static.GetCurrentWorldInfo().Game).Mods[0]).SwitchCheatManager(ModPackage);
+	MB().SwitchCheatManager(ModPackage);
 }

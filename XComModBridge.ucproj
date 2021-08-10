@@ -41,13 +41,16 @@
   <ItemGroup>
     <Compile Include="XComModBridge\Classes\*.uc" />
     <Compile Include="XComModBridge_Shell\Classes\*.uc" />
+    <Compile Include="XComModBridge_variables\Classes\ModBridgeVars.uc" />
     <Content Include="XComModBridge\*.uci" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="XComModBridge_variables" />
     <Folder Include="XComModBridge_Shell" />
     <Folder Include="XComModBridge\" />
     <Folder Include="XComModBridge\Classes\" />
     <Folder Include="XComModBridge_Shell\Classes" />
+    <Folder Include="XComModBridge_variables\Classes" />
   </ItemGroup>
   <Import Condition="'$(MSBuildExtensionsPath32)' != ''" Project="$(MSBuildExtensionsPath32)\PixelMine\UnrealScript.targets" />
   <Import Condition="'$(MSBuildExtensionsPath32)' == ''" Project="$(MSBuildExtensionsPath)\PixelMine\UnrealScript.targets" />
