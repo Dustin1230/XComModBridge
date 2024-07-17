@@ -293,3 +293,4 @@ __pycache__/
 !/XComModBridge
 XComModBridge/obj
 !/XComModBridge_Shell
+!/XComModBridge_variables
