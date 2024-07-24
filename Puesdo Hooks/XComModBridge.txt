@@ -1,0 +1,57 @@
+UPK_FILE = XComStrategyGame.upk
+
+[ADD_NAME_ENTRY]
+<%u8>
+<%t "arrInts">
+<%u0x00000000>
+<%u0x00070010>
+
+[ADD_NAME_ENTRY]
+<%u5>
+<%t "Mods">
+<%u0x00000000>
+<%u0x00070010>
+
+[ADD_IMPORT_ENTRY]
+<Core>
+<ArrayProperty>
+<XComGame.XComGameInfo>
+<Mods>
+
+
+
+UPK_FILE = XComGame.upk
+
+[ADD_NAME_ENTRY]
+<%u8>
+<%t "arrInts">
+<%u0x00000000>
+<%u0x00070010>
+
+[ADD_NAME_ENTRY]
+<%u13>
+<%t "ConsoleClass">
+<%u0x00000000>
+<%u0x00070010>
+
+[ADD_NAME_ENTRY]
+<%u17>
+<%t "ConsoleClassName">
+<%u0x00000000>
+<%u0x00070010>
+
+OBJECT = XComGameInfo.InitGame : AUTO
+[REPLACEMENT_CODE]
+/*(0x0000/0x0000)*/ 1B <AddMutator> 1F <%t "XComMutator.XComMutatorLoader"> 27 16 
+/*(0x002A/0x002A)*/ 07 [@label_0x0079] 77 01 <Engine.GameInfo.BaseMutator> 2A 16 
+/*(0x0039/0x0035)*/ 	19 01 <Engine.GameInfo.BaseMutator> [@] <NullRef> 00 ( 1B <Mutate> 1F <%t "XComGameInfo.InitGame"> 1C <Engine.Actor.GetALocalPlayerController> 16 16 ) 
+/*(0x0079/0x0069)*/ [#label_0x0079]
+
+//ADDING THIS LINE REMOVES NECCESSITY FOR ENTRY IN DefaultGame.ini
+//Mods.AddItem(new (self) class<XComMod>(DynamicLoadObject("XComModBridge.ModBridge", class'Class')));
+55 01 <@Mods> [@] ( 11 17 0B 0B 13 <Class.XComMod> 1C <Core.Object.DynamicLoadObject> 1F <%t "XComModBridge.ModBridge"> 20 <Core.Class> 4A 16 0B 16 )
+/*(0x0079/0x0069)*/ 1B <CacheMods> 16 
+	19 10 25 01 <@Mods> [@] <NullRef> 00 ( 1B <StartMatch> 16 )
+/*(0x0083/0x0073)*/ 1C <Engine.GameInfo.InitGame> 00 <.Options> 48 <.ErrorMessage> 16 
+/*(0x009F/0x0083)*/ 04 0B 
+/*(0x00A1/0x0085)*/ 53 
