@@ -41,16 +41,95 @@
   <ItemGroup>
     <Compile Include="XComModBridge\Classes\*.uc" />
     <Compile Include="XComModBridge_Shell\Classes\*.uc" />
-    <Compile Include="XComModBridge_variables\Classes\ModBridgeVars.uc" />
+    <Content Include="Puesdo Hooks\XComGame\UIGameplayToggles\RefreshDescInfo.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Puesdo Hooks\XComGame\UIGameplayToggles\UpdateData.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Puesdo Hooks\XComGame\XGAbility\ApplyCost.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Puesdo Hooks\XComGame\XGAbility\ShowAbility.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Puesdo Hooks\XComGame\XGTacticalGameCore\GetInventoryStatModifiers.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Puesdo Hooks\XComGame\XGUnit\AbsorbDamage.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Puesdo Hooks\XComGame\XGUnit\ApplyInventoryStatModifiers.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Puesdo Hooks\XComGame\XGUnit\OnTurnBeginHook.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Puesdo Hooks\XComModBridge.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Puesdo Hooks\XComStrategyGame\UISoldierAugmentation\OnInit.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Puesdo Hooks\XComStrategyGame\UISoldierAugmentation\UpdateRequirements.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Puesdo Hooks\XComStrategyGame\XGCyberneticsUI\BuildSoldierOption.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Puesdo Hooks\XComStrategyGame\XGFacility_Barracks\UpdateFoundryPerksForSoldier.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Puesdo Hooks\XComStrategyGame\XGFacility_CyberneticsLab\CanAffordAugment.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Puesdo Hooks\XComStrategyGame\XGFacility_CyberneticsLab\PayModCost.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Puesdo Hooks\XComStrategyGame\XGSoldierUI\GetHighlightedPerkDescription.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Puesdo Hooks\XComStrategyGame\XGSoldierUI\OnAcceptPromotion.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Puesdo Hooks\XComStrategyGame\XGSoldierUI\UpdateHeader.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Puesdo Hooks\XComStrategyGame\XGStrategySoldier\AssignRandomPerks.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Puesdo Hooks\XComStrategyGame\XGStrategySoldier\GetPerkInClassTree.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Puesdo Hooks\XComStrategyGame\XGStrategySoldier\GivePsiPerks.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Puesdo Hooks\XComStrategyGame\XGStrategySoldier\HasMedal.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Puesdo Hooks\XComStrategyGame\XGStrategySoldier\SetSoldierClass.txt">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="XComModBridge\*.uci" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="XComModBridge_variables" />
+    <Folder Include="Puesdo Hooks\" />
+    <Folder Include="Puesdo Hooks\XComGame\" />
+    <Folder Include="Puesdo Hooks\XComGame\UIGameplayToggles\" />
+    <Folder Include="Puesdo Hooks\XComGame\XGAbility\" />
+    <Folder Include="Puesdo Hooks\XComGame\XGTacticalGameCore\" />
+    <Folder Include="Puesdo Hooks\XComGame\XGUnit\" />
+    <Folder Include="Puesdo Hooks\XComStrategyGame\" />
+    <Folder Include="Puesdo Hooks\XComStrategyGame\UISoldierAugmentation\" />
+    <Folder Include="Puesdo Hooks\XComStrategyGame\XGCyberneticsUI\" />
+    <Folder Include="Puesdo Hooks\XComStrategyGame\XGFacility_Barracks\" />
+    <Folder Include="Puesdo Hooks\XComStrategyGame\XGFacility_CyberneticsLab\" />
+    <Folder Include="Puesdo Hooks\XComStrategyGame\XGSoldierUI\" />
+    <Folder Include="Puesdo Hooks\XComStrategyGame\XGStrategySoldier\" />
     <Folder Include="XComModBridge_Shell" />
     <Folder Include="XComModBridge\" />
     <Folder Include="XComModBridge\Classes\" />
     <Folder Include="XComModBridge_Shell\Classes" />
-    <Folder Include="XComModBridge_variables\Classes" />
   </ItemGroup>
   <Import Condition="'$(MSBuildExtensionsPath32)' != ''" Project="$(MSBuildExtensionsPath32)\PixelMine\UnrealScript.targets" />
   <Import Condition="'$(MSBuildExtensionsPath32)' == ''" Project="$(MSBuildExtensionsPath)\PixelMine\UnrealScript.targets" />
