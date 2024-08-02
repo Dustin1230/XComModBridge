@@ -113,6 +113,14 @@ OBJECT = XGCyberneticsUI.BuildSoldierOption : AUTO
 /*(0x05EC/0x0468)*/ 	06 [@label_0x006E] 
 /*(0x05EF/0x046B)*/ [#label_0x05EF]
 
+/*
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(kSoldier, true);
+    XComGameInfo(WorldInfo.Game).Mods[0].TMenu(, true).arrOptions.Length;
+    XComGameInfo(WorldInfo.Game).Mods[0].TMenu().arrOptions[0] = kOption;
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "BuildAugmentMenuOption");
+    kOption = XComGameInfo(WorldInfo.Game).Mods[0].TMenu().arrOptions[0];
+*/
+
 	19 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "RoulettePlus.RoulettePlusMod"> 16 ) [@] <NullRef> 00 ( 1B <Object> 00 <.kSoldier> 27 16 )
 	36 35 <XComGame.XGTacticalScreenMgr.TTableMenu.arrOptions> <XComGame.XGTacticalScreenMgr.TTableMenu> 00 01 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <TMenu> 0B 27 16 )
 

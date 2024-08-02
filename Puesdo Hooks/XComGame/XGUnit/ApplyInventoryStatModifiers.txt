@@ -2,6 +2,75 @@
 UPK_FILE = XComGame.upk
 OBJECT = XGUnit.ApplyInventoryStatModifiers : AUTO
 [REPLACEMENT_CODE]
+
+/*
+function ApplyInventoryStatModifiers()
+{
+    local XGGameData.EItemType eWeapon_GameplayType;
+    local XGInventory kInventory;
+    local XGWeapon kWeapon;
+    local array<int> arrBackPackItems;
+
+    eWeapon_GameplayType = 0;
+    kInventory = GetInventory();
+    // End:0x90
+    if(kInventory != none)
+    {
+        kWeapon = kInventory.GetActiveWeapon();
+        // End:0x90
+        if(kWeapon != none)
+        {
+            eWeapon_GameplayType = kWeapon.ItemType();
+        }
+    }
+    XComGameReplicationInfo(Class'Engine.Engine'.static.GetCurrentWorldInfo().GRI).m_kGameCore.GetBackpackItemArray(GetCharacter().m_kChar.kInventory, arrBackPackItems);
+    m_aCurrentStats[9] = m_aCurrentStats[0];
+    RemoveStatModifiers(m_aInventoryStats);
+    m_iWillCheatBonus = XComGameInfo(WorldInfo.Game).Mods[0].IntValue0(m_iWillCheatBonus, true);
+    m_iWillCheatBonus = int(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0(string(self)));
+    m_iWillCheatBonus = XComGameInfo(WorldInfo.Game).Mods[0].IntValue0();
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "AISM");
+    XComGameReplicationInfo(Class'Engine.Engine'.static.GetCurrentWorldInfo().GRI).m_kGameCore.GetInventoryStatModifiers(m_aInventoryStats, m_kCharacter.m_kChar, eWeapon_GameplayType, arrBackPackItems);
+    // End:0x3C7
+    if((m_iWillCheatBonus > 0) && IsAI())
+    {
+        m_aInventoryStats[0] += (1 + (m_iWillCheatBonus / 25));
+    }
+    // End:0x3F5
+    if(m_iWillCheatBonus > 0)
+    {
+        m_aInventoryStats[7] += (0 + (m_iWillCheatBonus / 10));
+    }
+    AddStatModifiers(m_aInventoryStats);
+    // End:0x48E
+    if(m_iWillCheatBonus < 0)
+    {
+        // End:0x457
+        if(IsAI())
+        {
+            m_aCurrentStats[0] = m_aCurrentStats[9];
+            SetUnitHP(m_aCurrentStats[0]);            
+        }
+        else
+        {
+            // End:0x478
+            if(m_aCurrentStats[0] <= 0)
+            {
+                SetUnitHP(1);                
+            }
+            else
+            {
+                SetUnitHP(m_aCurrentStats[0]);
+            }
+        }
+    }
+    m_aCurrentStats[9] = 0;
+    SetUnitHP(Min(GetUnitHP(), GetUnitMaxHP()));
+    m_aInventoryStats[3] += m_iCovertOpKills;
+    //return;    
+}
+*/
+
 /*(0x0000/0x0000)*/ 0F 00 <.eWeapon_GameplayType> 24 00 
 /*(0x000C/0x0008)*/ 0F 00 <.kInventory> 1B <GetInventory> 16 
 /*(0x0020/0x0018)*/ 07 [@label_0x0090] 77 00 <.kInventory> 2A 16 

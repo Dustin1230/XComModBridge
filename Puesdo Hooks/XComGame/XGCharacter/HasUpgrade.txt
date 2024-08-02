@@ -3,6 +3,23 @@ UPK_FILE = XComGame.upk
 OBJECT = XGCharacter.HasUpgrade : AUTO
 [REPLACEMENT_CODE]
 
+/*
+simulated function bool HasUpgrade(int iUpgrade)
+{
+    XComGameInfo(WorldInfo.Game).Mods[0].Object(self);    
+    int(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0("", true));    
+    int(XComGameInfo(WorldInfo.Game).Mods[0].StrValue1("", true));    
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "HasUpgrade_Overwrite", iUpgrade);
+    // End:0x249
+    if(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0() == "True")
+    {
+        return ((XComGameInfo(WorldInfo.Game).Mods[0].StrValue1() == "True") ? true : false);
+    }
+    return m_kChar.aUpgrades[iUpgrade] > 0;
+    //return ReturnValue;    
+}
+*/
+
 	19 10 25 19 2E <Class.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGameInfo.Mods> 00 ( 01 <XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Object> 17 16 ) 16
     38 4A 19 10 25 19 2E <Class.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGameInfo.Mods> 00 ( 01 <XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <StrValue0> 1F 00 27 16 ) 16
 	38 4A 19 10 25 19 2E <Class.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGameInfo.Mods> 00 ( 01 <XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <StrValue1> 1F 00 27 16 ) 16

@@ -4,12 +4,26 @@ OBJECT = XGTacticalGameCore.GetInventoryStatModifiers : AUTO
 [REPLACEMENT_CODE]
 /*(0x0000/0x0000)*/ 0F 00 <.iStat> 25
 
+/*
+    XComGameInfo(WorldInfo.Game).Mods[0].arrInts(arrBackPackItems, true).Length;
+*/
+
 			36 19 10 25 19 2E <Class.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGameInfo.Mods> 00 ( 01 <XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <arrInts> 00 <.arrBackPackItems> 27 16 )
  
 /*(0x000B/0x0007)*/ [#label_0x000B]
 /*(0x000B/0x0007)*/ 07 [@label_0x048B] 96 00 <.iStat> 2C 13 16 
 /*(0x001B/0x0013)*/ 	0F 1A 00 <.iStat> 48 <.aModifiers> 1B <GetWeaponStatBonus> 00 <.iStat> 38 3A 00 <.iEquippedWeapon> 48 <.kCharacter> 16 
 /*(0x0056/0x003A)*/ 	A1 1A 00 <.iStat> 48 <.aModifiers> 1B <GetArmorStatBonus> 00 <.iStat> 35 <XGTacticalGameCoreNativeBase.TInventory.iArmor> <XGTacticalGameCoreNativeBase.TInventory> 00 00 35 <XGTacticalGameCoreNativeBase.TCharacter.kInventory> <XGTacticalGameCoreNativeBase.TCharacter> 00 00 48 <.kCharacter> 48 <.kCharacter> 16 16 
+
+/*
+        XComGameInfo(WorldInfo.Game).Mods[0].IntValue0(0, true);
+        XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "GISM", (string(iStat) $ ",") $ string(iEquippedWeapon));
+        // End:0x315
+        if(XComGameInfo(WorldInfo.Game).Mods[0].IntValue0() != 0)
+        {
+            aModifiers[iStat] += XComGameInfo(WorldInfo.Game).Mods[0].IntValue0();
+        }
+*/
 
 			19 10 25 19 2E <Class.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGameInfo.Mods> 00 ( 01 <XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <IntValue0> 25 27 16 )
 			19 10 25 19 2E <Class.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGameInfo.Mods> 00 ( 01 <XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "AllMods"> 1F <%t "GISM"> 70 70 38 53 00 <.iStat> 1F <%t ","> 16 38 53 00 <.iEquippedWeapon> 16 16 )

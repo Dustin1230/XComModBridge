@@ -32,6 +32,14 @@ OBJECT = XGFacility_Barracks.UpdateFoundryPerksForSoldier : AUTO
 	//replaced this line with the section below
 	//	/*(0x0838/0x0558)*/ 		0F 1A 2C 1F 35 <XComGame.XGTacticalGameCoreNativeBase.TCharacter.aUpgrades> <XComGame.XGTacticalGameCoreNativeBase.TCharacter> 00 01 19 00 <.kSoldier> [@] <XGStrategySoldier.m_kChar> 00 ( 01 <XGStrategySoldier.m_kChar> ) 10 2C 15 19 00 <.kEngineering> [@] <XGFacility_Engineering.m_arrFoundryHistory> 00 ( 01 <XGFacility_Engineering.m_arrFoundryHistory> ) 
 
+/*
+            if(kEngineering.m_arrFoundryHistory[21] > 0)
+            {
+                XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(kSoldier, true);
+                XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod", "SetAdvServos");
+            }
+*/
+
 		07 [@if] 97 10 2C 15 19 00 <.kEngineering> [@] <XGFacility_Engineering.m_arrFoundryHistory> 00 ( 01 <XGFacility_Engineering.m_arrFoundryHistory> ) 25 16
 			19 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "RoulettePlus.RoulettePlusMod"> 16 ) [@] <NullRef> 00 ( 1B <Object> 00 <.kSoldier> 27 16 )
 			19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "RoulettePlus.RoulettePlusMod"> 1F <%t "SetAdvServos"> 16 )

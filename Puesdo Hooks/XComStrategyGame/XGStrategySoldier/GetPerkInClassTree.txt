@@ -9,6 +9,17 @@ OBJECT = XGStrategySoldier.GetPerkInClassTree : AUTO
 	//removed 19 of 0B
 /*(0x007A/0x005A)*/ [#label_0x007A]
 
+/*
+    XComGameInfo(WorldInfo.Game).Mods[0].IntValue0(-1, true);
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(self, true);
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "GetPerkInClassTree", (((string(branch) $ ",") $ string(Option)) $ ",") $ string(bIsPsiTree));
+    // End:0x2A0
+    if(XComGameInfo(WorldInfo.Game).Mods[0].IntValue0() != -1)
+    {
+        return byte(XComGameInfo(WorldInfo.Game).Mods[0].IntValue0());
+    }
+*/
+
 		19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <IntValue0> 1D <%i -1> 27 16 )
 		19 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "RoulettePlus.RoulettePlusMod"> 16 ) [@] <NullRef> 00 ( 1B <Object> 17 27 16 )
 		19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "AllMods"> 1F <%t "GetPerkInClassTree"> 70 70 70 70 38 53 00 <.branch> 1F <%t ","> 16 38 53 00 <.Option> 16 1F <%t ","> 16 38 54 2D 00 <.bIsPsiTree> 16 16 )

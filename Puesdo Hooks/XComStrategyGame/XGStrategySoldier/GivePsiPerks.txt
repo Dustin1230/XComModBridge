@@ -3,6 +3,41 @@ UPK_FILE = XComStrategyGame.upk
 OBJECT = XGStrategySoldier.GivePsiPerks : AUTO
 [REPLACEMENT_CODE]
 
+/*
+function GivePsiPerks()
+{
+    local array<int> iArr;
+    local int iIndex;
+
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(self, true);
+    int(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0("", true));
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "FireRocketPerk");
+    // End:0x2CE
+    if(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0() != "True")
+    {
+        LOCKERS().UnequipPistol(self);
+        // End:0x2CE
+        if(int(GetClass()) != 2)
+        {
+            iIndex = m_kChar.kInventory.iArmor;
+            // End:0x252
+            if(iIndex == 59)
+            {
+                LOCKERS().EquipArmor(self, 57);                
+            }
+            else
+            {
+                LOCKERS().EquipArmor(self, 59);
+            }
+            LOCKERS().EquipArmor(self, iIndex);
+            LOCKERS().EquipLargeItem(self, 218, 1);
+            OnLoadoutChange();
+        }
+    }
+    //return;    
+}
+*/
+
 	19 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "RoulettePlus.RoulettePlusMod"> 16 ) [@] <NullRef> 00 ( 1B <Object> 17 27 16 )
 	38 4A 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <StrValue0> 1F 00 27 16 )
 	19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "AllMods"> 1F <%t "FireRocketPerk"> 16 )
