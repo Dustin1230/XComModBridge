@@ -3,6 +3,15 @@ UPK_FILE = XComStrategyGame.upk
 OBJECT = XGStrategySoldier.AssignRandomPerks : AUTO
 [REPLACEMENT_CODE]
 
+/*
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(self, true);
+    int(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0("", true));
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "AssignRandomPerks_Overwrite");
+    // End:0x485
+    if(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0() != "True")
+    {
+*/
+
 	19 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "RoulettePlus.RoulettePlusMod"> 16 ) [@] <NullRef> 00 ( 1B <Object> 17 27 16 )
 	38 4A 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <StrValue0> 1F 00 27 16 )
 	19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "AllMods"> 1F <%t "AssignRandomPerks_Overwrite"> 16 )
@@ -35,6 +44,12 @@ OBJECT = XGStrategySoldier.AssignRandomPerks : AUTO
 /*(0x014E/0x00F6)*/ 				0F 1A 25 00 <.ePerk> 19 00 <.kPerkMan> [@] <XComGame.XComPerkManager.GetRandomPerk.ReturnValue> 00 ( 1B <GetRandomPerk> 16 ) 
 /*(0x0179/0x0115)*/ 				06 [@label_0x0134] 
 /*(0x017C/0x0118)*/ 		[#label_0x017C]
+
+/*
+                XComGameInfo(WorldInfo.Game).Mods[0].IntValue0(ePerk[0], true);
+                XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "AssignRandomPerks_Perk", string(ePerk[1]));
+                m_arrRandomPerks.AddItem(XComGameInfo(WorldInfo.Game).Mods[0].IntValue0());                
+*/
 
 			19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <IntValue0> 1A 25 00 <.ePerk> 27 16 )
 			19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "AllMods"> 1F <%t "AssignRandomPerks_Perk"> 38 52 1A 26 00 <.ePerk> 16 )

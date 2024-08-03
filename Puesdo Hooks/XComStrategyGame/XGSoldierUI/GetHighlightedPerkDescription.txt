@@ -3,9 +3,22 @@ UPK_FILE = XComStrategyGame.upk
 OBJECT = XGSoldierUI.GetHighlightedPerkDescription : AUTO
 [REPLACEMENT_CODE]
 
+/*
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(m_kSoldier, true);
+    int(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0("", true));
+    int(XComGameInfo(WorldInfo.Game).Mods[0].StrValue1("", true));
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "GHPD_Overwrite");
+    // End:0x20C
+    if(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0() == "True")
+    {
+        return XComGameInfo(WorldInfo.Game).Mods[0].StrValue1();
+    }
+*/
+
 	19 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "RoulettePlus.RoulettePlusMod"> 16 ) [@] <NullRef> 00 ( 1B <Object> 01 <@m_kSoldier> 27 16 )
 	38 4A 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <StrValue0> 1F 00 27 16 )
-	19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "AllMods"> 1F <%t "GHPD_Overwrite"> 16 )
+	38 4A 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <StrValue1> 1F 00 27 16 )
+    19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "AllMods"> 1F <%t "GHPD_Overwrite"> 16 )
 	07 [@if_output] 7A 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <StrValue0> 16 ) 1F <%t "True"> 16
 		04 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <StrValue1> 16 )
 	[#if_output]
@@ -32,6 +45,16 @@ OBJECT = XGSoldierUI.GetHighlightedPerkDescription : AUTO
 /*(0x0320/0x025C)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.IntValue1> 00 ( 01 <XComGame.XGParamTag.IntValue1> ) FD 91 00 <.iRank> 2C 0A 16 2C 0A 16 
 /*(0x0350/0x027C)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.IntValue2> 00 ( 01 <XComGame.XGParamTag.IntValue2> ) FD 00 <.iRank> 2C 0A 16 
 
+/*
+        int(XComGameInfo(WorldInfo.Game).Mods[0].StrValue1("", true));
+        XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "GHPD_LW_Append", Class'XComGame.XComLocalizer'.static.ExpandString(m_strLockedAbilityDescription) $ perkMgr().GetBriefSummary(iPerk));
+        // End:0x752
+        if(XComGameInfo(WorldInfo.Game).Mods[0].StrValue1() != "")
+        {
+            return XComGameInfo(WorldInfo.Game).Mods[0].StrValue1();
+        }
+*/
+
 		38 4A 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <StrValue1> 1F <%t ""> 27 16 )
 		19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "AllMods"> 1F <%t "GHPD_LW_Append"> 70 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strLockedAbilityDescription> 4A 16 ) 19 1B <perkMgr> 16 [@] <XComGame.XComPerkManager.GetBriefSummary.ReturnValue> 00 ( 1B <GetBriefSummary> 00 <.iPerk> 16 ) 16 16 )
 		07 [@if_LW_Append] 7B 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <StrValue1> 16 ) 1F <%t ""> 16
@@ -41,6 +64,16 @@ OBJECT = XGSoldierUI.GetHighlightedPerkDescription : AUTO
 /*(0x037C/0x0298)*/ 	04 70 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strLockedAbilityDescription> 4A 16 ) 19 1B <perkMgr> 16 [@] <XComGame.XComPerkManager.GetBriefSummary.ReturnValue> 00 ( 1B <GetBriefSummary> 00 <.iPerk> 16 ) 16 
 /*(0x03D1/0x02D9)*/ 	06 [@label_0x03FE] 
 /*(0x03D4/0x02DC)*/ [#label_0x03D4]
+
+/*
+        int(XComGameInfo(WorldInfo.Game).Mods[0].StrValue1("", true));
+        XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "GHPD_D_Append", perkMgr().GetBriefSummary(iPerk));
+        // End:0x948
+        if(XComGameInfo(WorldInfo.Game).Mods[0].StrValue1() != "")
+        {
+            return XComGameInfo(WorldInfo.Game).Mods[0].StrValue1();
+        }
+*/
 
 		38 4A 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <StrValue1> 1F <%t ""> 27 16 )
 		19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "AllMods"> 1F <%t "GHPD_D_Append"> 19 1B <perkMgr> 16 [@] <XComGame.XComPerkManager.GetBriefSummary.ReturnValue> 00 ( 1B <GetBriefSummary> 00 <.iPerk> 16 ) 16 )

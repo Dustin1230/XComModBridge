@@ -8,6 +8,17 @@ OBJECT = XGUnit.AbsorbDamage : AUTO
 /*(0x0058/0x0040)*/ 	0B 
 /*(0x0059/0x0041)*/ [#label_0x0059] 
 
+/*
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(self, true);
+    XComGameInfo(WorldInfo.Game).Mods[0].IntValue0(0, true);
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "AbsorbDamage");
+    // End:0x266
+    if(XComGameInfo(WorldInfo.Game).Mods[0].IntValue0() != 0)
+    {
+        fReturnDmg -= (float(XComGameInfo(WorldInfo.Game).Mods[0].IntValue0()) / 100.0000000);
+    }
+*/
+
 		19 19 10 25 19 2E <Class.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGameInfo.Mods> 00 ( 01 <XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "RoulettePlus.RoulettePlusMod"> 16 ) [@] <NullRef> 00 ( 1B <Object> 17 27 16 )
 		19 10 25 19 2E <Class.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGameInfo.Mods> 00 ( 01 <XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <IntValue0> 25 27 16 )
 		19 10 25 19 2E <Class.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGameInfo.Mods> 00 ( 01 <XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "AllMods"> 1F <%t "AbsorbDamage"> 16 )

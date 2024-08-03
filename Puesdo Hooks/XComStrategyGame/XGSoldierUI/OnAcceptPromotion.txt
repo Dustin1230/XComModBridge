@@ -3,6 +3,15 @@ UPK_FILE = XComStrategyGame.upk
 OBJECT = XGSoldierUI.OnAcceptPromotion : AUTO
 [REPLACEMENT_CODE]
 
+/*
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(m_kSoldier, true);
+    int(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0("", true));
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "OnAcceptPromotion_Overwrite");
+    // End:0x432
+    if(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0() != "True")
+    {
+*/
+
 	19 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "RoulettePlus.RoulettePlusMod"> 16 ) [@] <NullRef> 00 ( 1B <Object> 01 <@m_kSoldier> 27 16 )
 	38 4A 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <StrValue0> 1F 00 27 16 )
 	19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "AllMods"> 1F <%t "OnAcceptPromotion_Overwrite"> 16 )
@@ -38,6 +47,10 @@ OBJECT = XGSoldierUI.OnAcceptPromotion : AUTO
 /*(0x0223/0x01B3)*/ 19 01 <@m_kSoldier> [@] <NullRef> 00 ( 1B <LevelUpStats> 9E 94 1B <GetAbilityTreeBranch> 16 2C 08 16 1B <GetAbilityTreeOption> 16 16 16 ) 
 /*(0x025C/0x01E4)*/ 19 1B <Sound> 16 [@] <NullRef> 00 ( 1B <PlaySFX> 19 1B <SNDLIB> 16 [@] <XComGame.XComHQSoundCollection.SFX_UI_ChoosePromotion> 00 ( 01 <XComGame.XComHQSoundCollection.SFX_UI_ChoosePromotion> ) 16 ) 
 /*(0x029B/0x0217)*/ [#label_0x029B]
+
+/*
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "OnAcceptPromotion_After");
+*/
 
 	19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "AllMods"> 1F <%t "OnAcceptPromotion_After"> 16 )
 

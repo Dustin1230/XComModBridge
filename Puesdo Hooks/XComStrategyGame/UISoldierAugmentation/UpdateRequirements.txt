@@ -3,6 +3,55 @@ UPK_FILE = XComStrategyGame.upk
 OBJECT = UISoldierAugmentation.UpdateRequirements : AUTO
 [REPLACEMENT_CODE]
 
+/*
+simulated function UpdateRequirements()
+{
+    local XGParamTag kTag;
+    local string strRequiredCash, strRequiredMeld;
+    local int cashState, meldState;
+
+    XComGameInfo(WorldInfo.Game).Mods[0].IntValue0(-1, true);
+    XComGameInfo(WorldInfo.Game).Mods[0].IntValue1(-1, true);
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "CanAffordAugment", (string(m_kCybernetics.m_iModCashCost) $ ",") $ string(m_kCybernetics.m_iModMeldCost));
+    // End:0x23B
+    if(XComGameInfo(WorldInfo.Game).Mods[0].IntValue0() == -1)
+    {
+        XComGameInfo(WorldInfo.Game).Mods[0].IntValue0(m_kCybernetics.m_iModCashCost, true);
+    }
+    // End:0x30C
+    if(XComGameInfo(WorldInfo.Game).Mods[0].IntValue1() == -1)
+    {
+        XComGameInfo(WorldInfo.Game).Mods[0].IntValue1(m_kCybernetics.m_iModMeldCost, true);
+    }
+    kTag = XGParamTag(XComEngine(Class'Engine.Engine'.static.GetEngine()).LocalizeContext.FindTag("XGParam"));
+    // End:0x423
+    if(m_kCybernetics.GetResource(0) >= XComGameInfo(WorldInfo.Game).Mods[0].IntValue0())
+    {
+        cashState = GetMgr().GetResourceUIState(0);        
+    }
+    else
+    {
+        cashState = 3;
+    }
+    // End:0x4D8
+    if(m_kCybernetics.GetResource(7) >= XComGameInfo(WorldInfo.Game).Mods[0].IntValue1())
+    {
+        meldState = GetMgr().GetResourceUIState(7);        
+    }
+    else
+    {
+        meldState = 3;
+    }
+    strRequiredCash = Class'XGScreenMgr'.default.m_strCreditsPrefix $ string(XComGameInfo(WorldInfo.Game).Mods[0].IntValue0());
+    strRequiredCash = Class'XComGame.UIUtilities'.static.GetHTMLColoredText(strRequiredCash, cashState);
+    strRequiredMeld = Class'XComGame.UIUtilities'.static.InjectHTMLImage(((meldState == 3) ? "meld_red" : "meld_orange"), 32, 26, -5);    
+    strRequiredMeld $= Class'XComGame.UIUtilities'.static.GetHTMLColoredText(string(XComGameInfo(WorldInfo.Game).Mods[0].IntValue1()), meldState);
+    kTag.StrValue0 = (strRequiredCash $ " ") $ strRequiredMeld;
+    AS_SetCost(Class'XComGame.XComLocalizer'.static.ExpandString(m_strCostLabel));
+    //return;    
+}
+*/
+
 		19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <IntValue0> 1D <%i -1> 27 16 )
 		19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <IntValue1> 1D <%i -1> 27 16 )
 		19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "AllMods"> 1F <%t "CanAffordAugment"> 70 70 38 53 19 01 <@m_kCybernetics> [@] <XGFacility_CyberneticsLab.m_iModCashCost> 00 ( 01 <XGFacility_CyberneticsLab.m_iModCashCost> ) 1F <%t ","> 16 38 53 19 01 <@m_kCybernetics> [@] <XGFacility_CyberneticsLab.m_iModMeldCost> 00 ( 01 <XGFacility_CyberneticsLab.m_iModMeldCost> ) 16 16 )

@@ -31,6 +31,11 @@ OBJECT = XGSoldierUI.UpdateHeader : AUTO
 /*(0x063E/0x03EE)*/ 0F 35 <XComGame.XGTacticalScreenMgr.TLabeledText.strLabel> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 35 <XGSoldierUI.TSoldierHeader.txtWill> <@TSoldierHeader> 00 01 01 <@m_kHeader> 01 <@m_strLabelWill> 
 /*(0x0677/0x040F)*/ 0F 35 <XComGame.XGTacticalScreenMgr.TLabeledText.StrValue> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 35 <XGSoldierUI.TSoldierHeader.txtWill> <@TSoldierHeader> 00 01 01 <@m_kHeader> 38 53 19 01 <@m_kSoldier> [@] <XGStrategySoldier.GetMaxStat.ReturnValue> 00 ( 1B <GetMaxStat> 2C 07 16 ) 
 
+/*
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(m_kSoldier, true);
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "Strat_Before_GISM");
+*/
+
 		19 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "RoulettePlus.RoulettePlusMod"> 16 ) [@] <NullRef> 00 ( 1B <Object> 01 <@m_kSoldier> 27 16 )
 		19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "AllMods"> 1F <%t "Strat_Before_GISM"> 16 )
 

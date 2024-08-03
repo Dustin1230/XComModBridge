@@ -94,6 +94,26 @@ OBJECT = XGStrategySoldier.SetSoldierClass : AUTO
 /*(0x0768/0x0584)*/ 	A1 01 <@m_iEnergy> 2C 14 16 
 	//removed 9 of 0B
 
+/*
+            XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(self, true);
+            int(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0("", true));
+            XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod", "AugmentRestriction");
+            // End:0xB14
+            if(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0() != "True")
+            {
+                // End:0xAAB
+                if((GetRank()) < 7)
+                {
+                    m_kSoldier.iXP = TACTICAL().GetXPRequired((GetRank()) - 1) + int(float(TACTICAL().GetXPRequired(GetRank()) - TACTICAL().GetXPRequired((GetRank()) - 1)) * (float(1) - (float(TACTICAL().GetXPRequired((GetRank()) + 1) - m_kSoldier.iXP) / float(TACTICAL().GetXPRequired((GetRank()) + 1) - TACTICAL().GetXPRequired(GetRank())))));                    
+                }
+                else
+                {
+                    m_kSoldier.iXP = TACTICAL().GetXPRequired((GetRank()) - 1);
+                }
+                m_kSoldier.iRank -= 1;
+            }
+*/
+
 		19 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "RoulettePlus.RoulettePlusMod"> 16 ) [@] <NullRef> 00 ( 1B <Object> 17 27 16 )
 		38 4A 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <StrValue0> 1F 00 27 16 )
 		19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "RoulettePlus.RoulettePlusMod"> 1F <%t "AugmentRestriction"> 16 )
@@ -130,6 +150,13 @@ OBJECT = XGStrategySoldier.SetSoldierClass : AUTO
 /*(0x0B64/0x0884)*/ 0F 35 <XComGame.XGTacticalGameCoreNativeBase.TClass.eType> <XComGame.XGTacticalGameCoreNativeBase.TClass> 00 00 35 <XComGame.XGTacticalGameCoreNativeBase.TSoldier.kClass> <XComGame.XGTacticalGameCoreNativeBase.TSoldier> 00 01 01 <@m_kSoldier> 00 <.eNewClass> 
 	// replaced this line with the 2 below /*(0x0B9D/0x08A5)*/ 1B <GivePerk> 1B <GetPerkInClassTree> 26 90 2C 02 A7 2C 02 16 16 28 16 16 
 
+/*
+            ePreviousClass = GetPerkInClassTree(1, 2 * Rand(2), false);
+            GivePerk(ePreviousClass);
+            XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(self, true);
+            XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod", "PerkMerge", string(ePreviousClass));
+*/
+
 		0F 00 <.ePreviousClass> 1B <GetPerkInClassTree> 26 90 2C 02 A7 2C 02 16 16 28 16
 		1B <GivePerk> 00 <.ePreviousClass> 16
 
@@ -146,6 +173,13 @@ OBJECT = XGStrategySoldier.SetSoldierClass : AUTO
 /*(0x0CB3/0x096B)*/ 19 1B <TACTICAL> 16 [@] <XComGame.XGTacticalGameCoreNativeBase.TInventoryLargeItemsSetItem.ReturnValue> 00 ( 1C <XComGame.XGTacticalGameCoreNativeBase.TInventoryLargeItemsSetItem> 01 <@m_kBackedUpLoadout> 25 38 3A 19 1B <STORAGE> 16 [@] <XGStorage.GetInfinitePrimary.ReturnValue> 00 ( 1B <GetInfinitePrimary> 17 16 ) 16 ) 
 /*(0x0D00/0x09A8)*/ 19 1B <LOCKERS> 16 [@] <XGFacility_Lockers.ApplySoldierLoadout.ReturnValue> 00 ( 1B <ApplySoldierLoadout> 17 00 <.kNewLoadout> 16 ) 
 	//replaced this line with the one below /*(0x0D2A/0x09CA)*/ 07 [@label_0x0D54] 82 1B <IsOptionEnabled> 24 04 16 18 [@] ( 81 1B <IsASuperSoldier> 16 16 16 ) 
+
+/*
+    if(!IsAugmented())
+    {
+        AssignRandomPerks();
+    }
+*/
 
 	07 [@label_0x0D54] 81 1B <IsAugmented> 16 16
 

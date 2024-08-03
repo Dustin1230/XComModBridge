@@ -3,6 +3,40 @@ UPK_FILE = XComGame.upk
 OBJECT = XGUnit.OnTurnBeginHook : AUTO
 [REPLACEMENT_CODE]
 
+/*
+function OnTurnBeginHook()
+{
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(self, true);
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "TurnBeginHook");
+    ResetTurnActions();
+    m_bCovertHackerThisTurn = false;
+    m_bAbsorptionFieldsWorked = false;
+    m_bLightningReflexesUsed = false;
+    m_bFreeFireActionTaken = false;
+    m_bCloseAndPersonalTaken = false;
+    m_bFiredReactiveTargeting = false;
+    m_bHadShieldThisTurn = false;
+    m_arrMoraleEventsThisTurn.Length = 0;
+    // End:0x1B7
+    if((!GetCharacter().HasUpgrade(95) && !IsAffectedByAbility(91)) && !IsAffectedByAbility(92))
+    {
+        Unhide();
+    }
+    // End:0x1E4
+    if((IsAffectedByAbility(92)) && (GetStealthCharges()) == 0)
+    {
+        ClearAppliedAbility(92);
+    }
+    // End:0x21C
+    if((m_bNeuralDampingStun || m_iElectropulseTurn > 0) || IsStrangled())
+    {
+        SetMoves(0);
+    }
+    m_bExaltHacked = false;
+    //return;    
+}
+*/
+
 		19 19 10 25 19 2E <Class.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGameInfo.Mods> 00 ( 01 <XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "RoulettePlus.RoulettePlusMod"> 16 ) [@] <NullRef> 00 ( 1B <Object> 17 27 16 )
 		19 10 25 19 2E <Class.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGameInfo.Mods> 00 ( 01 <XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "AllMods"> 1F <%t "TurnBeginHook"> 16 )
 
