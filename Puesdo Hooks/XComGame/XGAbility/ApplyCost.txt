@@ -4,11 +4,10 @@ OBJECT = XGAbility.ApplyCost : AUTO
 [REPLACEMENT_CODE]
 
 /*
-    strName = XComGameInfo(WorldInfo.Game).Mods[0].StrValue1(strName, true);
-    strName = XComGameInfo(WorldInfo.Game).Mods[0].StrValue0(string(self), true);
-    strName = XComGameInfo(WorldInfo.Game).Mods[0].StrValue1();
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(self, true);
+    int(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0("", true));
     XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "XGAbility.ApplyCost_Overwrite");
-    // End:0x1315
+    // End:0x12D0
     if(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0() != "True")
     {
 */

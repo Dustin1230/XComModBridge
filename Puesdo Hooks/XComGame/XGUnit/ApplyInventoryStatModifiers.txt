@@ -26,26 +26,24 @@ function ApplyInventoryStatModifiers()
     XComGameReplicationInfo(Class'Engine.Engine'.static.GetCurrentWorldInfo().GRI).m_kGameCore.GetBackpackItemArray(GetCharacter().m_kChar.kInventory, arrBackPackItems);
     m_aCurrentStats[9] = m_aCurrentStats[0];
     RemoveStatModifiers(m_aInventoryStats);
-    m_iWillCheatBonus = XComGameInfo(WorldInfo.Game).Mods[0].IntValue0(m_iWillCheatBonus, true);
-    m_iWillCheatBonus = int(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0(string(self)));
-    m_iWillCheatBonus = XComGameInfo(WorldInfo.Game).Mods[0].IntValue0();
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(self, true);
     XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "AISM");
     XComGameReplicationInfo(Class'Engine.Engine'.static.GetCurrentWorldInfo().GRI).m_kGameCore.GetInventoryStatModifiers(m_aInventoryStats, m_kCharacter.m_kChar, eWeapon_GameplayType, arrBackPackItems);
-    // End:0x3C7
+    // End:0x328
     if((m_iWillCheatBonus > 0) && IsAI())
     {
         m_aInventoryStats[0] += (1 + (m_iWillCheatBonus / 25));
     }
-    // End:0x3F5
+    // End:0x356
     if(m_iWillCheatBonus > 0)
     {
         m_aInventoryStats[7] += (0 + (m_iWillCheatBonus / 10));
     }
     AddStatModifiers(m_aInventoryStats);
-    // End:0x48E
+    // End:0x3EF
     if(m_iWillCheatBonus < 0)
     {
-        // End:0x457
+        // End:0x3B8
         if(IsAI())
         {
             m_aCurrentStats[0] = m_aCurrentStats[9];
@@ -53,7 +51,7 @@ function ApplyInventoryStatModifiers()
         }
         else
         {
-            // End:0x478
+            // End:0x3D9
             if(m_aCurrentStats[0] <= 0)
             {
                 SetUnitHP(1);                

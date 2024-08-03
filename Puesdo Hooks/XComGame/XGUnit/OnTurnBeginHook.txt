@@ -6,9 +6,7 @@ OBJECT = XGUnit.OnTurnBeginHook : AUTO
 /*
 function OnTurnBeginHook()
 {
-    m_strCauseOfDeath = XComGameInfo(WorldInfo.Game).Mods[0].StrValue1(m_strCauseOfDeath, true);
-    m_strCauseOfDeath = XComGameInfo(WorldInfo.Game).Mods[0].StrValue0(string(self), true);
-    m_strCauseOfDeath = XComGameInfo(WorldInfo.Game).Mods[0].StrValue1();
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(self, true);
     XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "TurnBeginHook");
     ResetTurnActions();
     m_bCovertHackerThisTurn = false;
@@ -19,17 +17,17 @@ function OnTurnBeginHook()
     m_bFiredReactiveTargeting = false;
     m_bHadShieldThisTurn = false;
     m_arrMoraleEventsThisTurn.Length = 0;
-    // End:0x255
+    // End:0x1B7
     if((!GetCharacter().HasUpgrade(95) && !IsAffectedByAbility(91)) && !IsAffectedByAbility(92))
     {
         Unhide();
     }
-    // End:0x282
+    // End:0x1E4
     if((IsAffectedByAbility(92)) && (GetStealthCharges()) == 0)
     {
         ClearAppliedAbility(92);
     }
-    // End:0x2BA
+    // End:0x21C
     if((m_bNeuralDampingStun || m_iElectropulseTurn > 0) || IsStrangled())
     {
         SetMoves(0);

@@ -9,12 +9,10 @@ OBJECT = XGUnit.AbsorbDamage : AUTO
 /*(0x0059/0x0041)*/ [#label_0x0059] 
 
 /*
-    m_iWillCheatBonus = XComGameInfo(WorldInfo.Game).Mods[0].IntValue1(m_iWillCheatBonus, true);
-    m_iWillCheatBonus = int(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0(string(self)));
-    m_iWillCheatBonus = XComGameInfo(WorldInfo.Game).Mods[0].IntValue0(0, true);
-    m_iWillCheatBonus = XComGameInfo(WorldInfo.Game).Mods[0].IntValue1();
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(self, true);
+    XComGameInfo(WorldInfo.Game).Mods[0].IntValue0(0, true);
     XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "AbsorbDamage");
-    // End:0x30F
+    // End:0x266
     if(XComGameInfo(WorldInfo.Game).Mods[0].IntValue0() != 0)
     {
         fReturnDmg -= (float(XComGameInfo(WorldInfo.Game).Mods[0].IntValue0()) / 100.0000000);

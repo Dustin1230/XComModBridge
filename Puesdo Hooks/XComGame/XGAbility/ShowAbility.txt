@@ -4,16 +4,15 @@ OBJECT = XGAbility.ShowAbility : AUTO
 [REPLACEMENT_CODE]
 
 /*
-    strName = XComGameInfo(WorldInfo.Game).Mods[0].StrValue1(strName, true);
-    strName = XComGameInfo(WorldInfo.Game).Mods[0].StrValue0(string(self), true);
-    strName = XComGameInfo(WorldInfo.Game).Mods[0].StrValue1();
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(self, true);
+    int(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0("", true));
     XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "ShowAbility");
-    // End:0x1F3
+    // End:0x1AE
     if(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0() == "True")
     {
         return true;
     }
-    // End:0x255
+    // End:0x210
     if(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0() == "False")
     {
         return false;
