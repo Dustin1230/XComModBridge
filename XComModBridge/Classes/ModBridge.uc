@@ -310,6 +310,8 @@ function bool ModRecordActor(string Checkpoint, class<Actor> ActorClasstoRecord,
 	local bool bFound;
 	local string ModPackage;
 
+	/*
+
 	ModPackage = GetCallingMod();
 	ModPackage = Left(ModPackage, InStr(ModPackage, "."));
 
@@ -418,10 +420,14 @@ function bool ModRecordActor(string Checkpoint, class<Actor> ActorClasstoRecord,
 	}
 
 	return false;
+
+	*/
 }
 
 function ModRemoveRecordedActor(string Checkpoint, class<actor> ActorClassToRemove)
 {
+	/*
+
 	local int index;
 	local string modpackage;
 	local bool bSuccess, indexFound;
@@ -535,10 +541,12 @@ function ModRemoveRecordedActor(string Checkpoint, class<actor> ActorClassToRemo
 			`Log("ModRemoveRecordedActor failed, Actor not found in specified Checkpoint Record List", verboseLog, 'ModBridge');
 		}
 	}
+	*/
 }
 
 function ModRemoveDestoryActor(string Checkpoint, class<actor> ActorClassToRemove)
 {
+	/*
 	if(Checkpoint ~= "Tactical")
 	{
 		if(class'Mod_Checkpoint_TacticalGame'.default.ActorClassesToRecord.Find(ActorClassToRemove) == -1)
@@ -559,6 +567,7 @@ function ModRemoveDestoryActor(string Checkpoint, class<actor> ActorClassToRemov
 		}
 
 	}
+	*/
 }
 
 function bool AddModToList(ModBridgeMod ModToAdd)
