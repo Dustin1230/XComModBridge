@@ -1,0 +1,31 @@
+// Adds more variety to the weapons, items, and armor that blueshirts bring into Base Defense
+UPK_FILE=XComStrategyGame.upk
+OBJECT = XGFacility_Barracks.ChooseHQAssaultSquad : AUTO
+[REPLACEMENT_CODE]
+/*(0x0000/0x0000)*/ 07 [@label_0x02DD] 2D 00 <.bReinforcements> 
+/*(0x000D/0x0009)*/ [#label_0x000D]
+/*(0x000D/0x0009)*/ 07 [@label_0x0093] 97 36 19 00 <.kSkyranger> [@] <XGShip_Dropship.m_arrSoldiers> 00 ( 01 <XGShip_Dropship.m_arrSoldiers> ) 2C 08 16 
+/*(0x0033/0x0023)*/ 0F 00 <.kSoldier> 10 A7 36 19 00 <.kSkyranger> [@] <XGShip_Dropship.m_arrSoldiers> 00 ( 01 <XGShip_Dropship.m_arrSoldiers> ) 16 19 00 <.kSkyranger> [@] <XGShip_Dropship.m_arrSoldiers> 00 ( 01 <XGShip_Dropship.m_arrSoldiers> ) 
+/*(0x007D/0x0051)*/ 1B <UnloadSoldier> 00 <.kSoldier> 16 
+
+/*
+			STORAGE().BackupAndReleaseInventory(kSoldier);
+*/
+					19 1B <STORAGE> 16 [@] <NullRef> 00 ( 1B <BackupAndReleaseInventory> 00 <.kSoldier> 16 )
+
+/*(0x0090/0x0060)*/ 06 [@label_0x000D] 
+/*(0x0093/0x0063)*/ [#label_0x0093]
+/*(0x0093/0x0063)*/ 14 19 00 <.kSkyranger> [@] <XGShip_Dropship.m_bReinforcementsForHQAssault> 00 ( 2D 01 <XGShip_Dropship.m_bReinforcementsForHQAssault> ) 27 
+/*(0x00B4/0x0078)*/ [#label_0x00B4]
+/*(0x00B4/0x0078)*/ 07 [@label_0x02DD] 81 19 00 <.kSkyranger> [@] <XGShip_Dropship.IsFull.ReturnValue> 00 ( 1B <IsFull> 16 ) 16 
+/*(0x00D8/0x0094)*/ 0F 00 <.kSoldier> 1B <CreateSoldier> 24 00 25 19 1B <Continent> 19 1B <HQ> 16 [@] <XGHeadQuarters.GetContinent.ReturnValue> 00 ( 1B <GetContinent> 16 ) 16 [@] <XGContinent.GetRandomCouncilCountry.ReturnValue> 00 ( 1B <GetRandomCouncilCountry> 16 ) 27 16 
+/*(0x0130/0x00E0)*/ 14 19 00 <.kSoldier> [@] <XGStrategySoldier.m_bBlueShirt> 00 ( 2D 01 <XGStrategySoldier.m_bBlueShirt> ) 27 
+/*(0x0151/0x00F5)*/ 0F 35 <XComGame.XGTacticalGameCoreNativeBase.TAppearance.iArmorTint> <XComGame.XGTacticalGameCoreNativeBase.TAppearance> 00 00 35 <XComGame.XGTacticalGameCoreNativeBase.TSoldier.kAppearance> <XComGame.XGTacticalGameCoreNativeBase.TSoldier> 00 01 19 00 <.kSoldier> [@] <XGStrategySoldier.m_kSoldier> 00 ( 01 <XGStrategySoldier.m_kSoldier> ) 2C 07 
+/*(0x0198/0x0120)*/ 0F 35 <XComGame.XGTacticalGameCoreNativeBase.TAppearance.iHaircut> <XComGame.XGTacticalGameCoreNativeBase.TAppearance> 00 00 35 <XComGame.XGTacticalGameCoreNativeBase.TSoldier.kAppearance> <XComGame.XGTacticalGameCoreNativeBase.TSoldier> 00 01 19 00 <.kSoldier> [@] <XGStrategySoldier.m_kSoldier> 00 ( 01 <XGStrategySoldier.m_kSoldier> ) 1D <%i 425> 
+/*(0x01E2/0x014E)*/ 0F 35 <XComGame.XGTacticalGameCoreNativeBase.TAppearance.iVoice> <XComGame.XGTacticalGameCoreNativeBase.TAppearance> 00 00 35 <XComGame.XGTacticalGameCoreNativeBase.TSoldier.kAppearance> <XComGame.XGTacticalGameCoreNativeBase.TSoldier> 00 01 19 00 <.kSoldier> [@] <XGStrategySoldier.m_kSoldier> 00 ( 01 <XGStrategySoldier.m_kSoldier> ) 45 9A 35 <XComGame.XGTacticalGameCoreNativeBase.TAppearance.iGender> <XComGame.XGTacticalGameCoreNativeBase.TAppearance> 00 00 35 <XComGame.XGTacticalGameCoreNativeBase.TSoldier.kAppearance> <XComGame.XGTacticalGameCoreNativeBase.TSoldier> 00 00 19 00 <.kSoldier> [@] <XGStrategySoldier.m_kSoldier> 00 ( 01 <XGStrategySoldier.m_kSoldier> ) 26 16 [@] ( 2C 3D ) [@] ( 2C 40 ) 
+/*(0x0277/0x01AB)*/ 0F 35 <XComGame.XGTacticalGameCoreNativeBase.TAppearance.iLanguage> <XComGame.XGTacticalGameCoreNativeBase.TAppearance> 00 00 35 <XComGame.XGTacticalGameCoreNativeBase.TSoldier.kAppearance> <XComGame.XGTacticalGameCoreNativeBase.TSoldier> 00 01 19 00 <.kSoldier> [@] <XGStrategySoldier.m_kSoldier> 00 ( 01 <XGStrategySoldier.m_kSoldier> ) 25 
+/*(0x02BD/0x01D5)*/ 1B <LoadSoldier> 00 <.kSoldier> 00 <.kSkyranger> 4A 16 
+/*(0x02DA/0x01EA)*/ 06 [@label_0x00B4] 
+/*(0x02DD/0x01ED)*/ [#label_0x02DD]
+/*(0x02DD/0x01ED)*/ 04 0B 
+/*(0x02DF/0x01EF)*/ 53 

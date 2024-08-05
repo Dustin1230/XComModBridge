@@ -8,14 +8,19 @@ OBJECT = XGSoldierUI.OnAcceptPromotion : AUTO
     int(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0("", true));
     XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "OnAcceptPromotion_Overwrite");
     // End:0x432
-    if(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0() != "True")
+    if(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0() == "True")
     {
+		return true;
+	}
 */
 
 	19 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "RoulettePlus.RoulettePlusMod"> 16 ) [@] <NullRef> 00 ( 1B <Object> 01 <@m_kSoldier> 27 16 )
 	38 4A 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <StrValue0> 1F 00 27 16 )
 	19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "AllMods"> 1F <%t "OnAcceptPromotion_Overwrite"> 16 )
-	07 [@label_0x029B] 7B 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <StrValue0> 16 ) 1F <%t "True"> 16
+	07 [@label_overwrite] 7A 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <StrValue0> 16 ) 1F <%t "True"> 16
+	04 27
+	[#label_overwrite]
+
 
 /*(0x0000/0x0000)*/ 0F 00 <.Perk> 38 3A 19 01 <@m_kSoldier> [@] <XGStrategySoldier.GetPerkInClassTree.ReturnValue> 00 ( 1B <GetPerkInClassTree> 1B <GetAbilityTreeBranch> 16 1B <GetAbilityTreeOption> 16 9A 01 <XGScreenMgr.m_iCurrentView> 2C 02 16 16 ) 
 /*(0x004C/0x003C)*/ 07 [@label_0x0137] 9A 01 <XGScreenMgr.m_iCurrentView> 2C 02 16 

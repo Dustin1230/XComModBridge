@@ -1,0 +1,42 @@
+// Adds more variety to the weapons, items, and armor that blueshirts bring into Base Defense
+UPK_FILE=XComStrategyGame.upk
+OBJECT = XGFacility_Barracks.CreateSoldier : AUTO
+[REPLACEMENT_CODE]
+49 [@] ( 28 15 ) 
+0F 00 <.kSoldier> 1C <Engine.Actor.Spawn> 20 <Class.XGStrategySoldier> 4A 4A 4A 4A 4A 4A 4A 16 
+0F 19 00 <.kSoldier> [@] <XGStrategySoldier.m_kSoldier> 00 ( 01 <XGStrategySoldier.m_kSoldier> ) 19 01 <@m_kCharGen> [@] <XComGame.XGCharacterGenerator.CreateTSoldier.ReturnValue> 00 ( 1B <CreateTSoldier> 4A 00 <.iCountry> 4A 4A 16 ) 
+14 2D 35 <XComGame.XGTacticalGameCoreNativeBase.TSoldier.bBlueshirt> <XComGame.XGTacticalGameCoreNativeBase.TSoldier> 00 01 19 00 <.kSoldier> [@] <XGStrategySoldier.m_kSoldier> 00 ( 01 <XGStrategySoldier.m_kSoldier> ) 2D 00 <.bBlueshirt> 
+0F 19 00 <.kSoldier> [@] <XGStrategySoldier.m_kChar> 00 ( 01 <XGStrategySoldier.m_kChar> ) 19 1B <TACTICAL> 16 [@] <XComGame.XGTacticalGameCoreNativeBase.GetTCharacter.ReturnValue> 00 ( 1B <GetTCharacter> 2C 02 16 ) 
+1B <RandomizeStats> 00 <.kSoldier> 16 
+19 1B <STORAGE> 16 [@] <NullRef> 00 ( 1B <AutoEquip> 00 <.kSoldier> 16 ) 
+07 [@label_Blueshirt] 2D 00 <.bBlueshirt> 
+	07 [@label_0x018C] 19 1B <ENGINEERING> 16 [@] <XGFacility_Engineering.IsFoundryTechResearched.ReturnValue> 00 ( 1B <IsFoundryTechResearched> 2C 2A 16 ) 
+		19 1B <LOCKERS> 16 [@] <XGFacility_Lockers.EquipLargeItem.ReturnValue> 00 ( 1B <EquipLargeItem> 00 <.kSoldier> 2C D7 2C 00 16 ) 
+	[#label_0x018C]
+	07 [@label_0x01DC] 19 1B <ENGINEERING> 16 [@] <XGFacility_Engineering.IsFoundryTechResearched.ReturnValue> 00 ( 1B <IsFoundryTechResearched> 2C 2B 16 ) 
+		19 1B <LOCKERS> 16 [@] <XGFacility_Lockers.EquipArmor.ReturnValue> 00 ( 1B <EquipArmor> 00 <.kSoldier> 2C 9F 16 ) 
+	[#label_0x01DC]
+
+// BEGIN CHANGES
+/* 
+	XComGameInfo(WorldInfo.Game).Mods[0].Mods("BetterBlueshirts.BetterBlueshirtsMod").Object(kSoldier)
+	XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "CreateBlueshirt");
+*/
+
+			19 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "BetterBlueshirts.BetterBlueshirtsMod"> 16 ) [@] <NullRef> 00 ( 1B <Object> 00 <.kSoldier> 16 )
+			19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "AllMods"> 1F <%t "CreateBlueshirt"> 16 )
+
+// END CHANGES
+
+[#label_Blueshirt]
+0F 00 <.I> 25 
+[#label_0x01E7]
+07 [@label_0x0235] 96 00 <.I> 00 <.iSoldierLevel> 16 
+	19 00 <.kSoldier> [@] <NullRef> 00 ( 1B <LevelUp> 00 <.eClass> 4A 16 ) 
+	A5 00 <.I> 16 
+	06 [@label_0x01E7] 
+[#label_0x0235]
+1B <AddNewSoldier> 00 <.kSoldier> 4A 2D 00 <.bBlueshirt> 16 
+04 00 <.kSoldier> 
+04 3A <.ReturnValue> 
+53 
