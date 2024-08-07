@@ -2,6 +2,8 @@
 UPK_FILE = XComStrategyGame.upk
 OBJECT = XGFacility_Barracks.AddNewSoldier : AUTO
 [REPLACEMENT_CODE]
+/*(0x0000/0x0000)*/ 49 [@] ( 28 15 ) 
+/*(0x0005/0x0005)*/ 49 [@] ( 28 15 ) 
 
 /*
                 XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(kSoldier, true);
@@ -12,8 +14,6 @@ OBJECT = XGFacility_Barracks.AddNewSoldier : AUTO
 			19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "AllMods"> 1F <%t "AddNewSoldier"> 16 )
 
 
-/*(0x0000/0x0000)*/ 49 [@] ( 28 15 ) 
-/*(0x0005/0x0005)*/ 49 [@] ( 28 15 ) 
 /*(0x000A/0x000A)*/ 0F 35 <XComGame.XGTacticalGameCoreNativeBase.TSoldier.iID> <XComGame.XGTacticalGameCoreNativeBase.TSoldier> 00 01 19 00 <.kSoldier> [@] <XGStrategySoldier.m_kSoldier> 00 ( 01 <XGStrategySoldier.m_kSoldier> ) A5 01 <@m_iSoldierCounter> 16 
 /*(0x0047/0x002F)*/ 06 [@label_0x00AD] 
 /*(0x004A/0x0032)*/ 82 1B <HasOTSUpgrade> 24 03 16 18 [@] ( 81 2D 00 <.bBlueshirt> 16 16 ) 

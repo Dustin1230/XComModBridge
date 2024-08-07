@@ -18,6 +18,7 @@ OBJECT = UIGameplayToggles.UpdateData : AUTO
 			19 10 25 19 2E <Class.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGameInfo.Mods> 00 ( 01 <XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "AllMods"> 1F <%t "SecondWaveTitleAmmend"> 38 53 00 <.I> 16 )
 			0F 1A 00 <.I> 01 <@m_arrGameplayToggleTitle> 19 10 25 19 2E <Class.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGameInfo.Mods> 00 ( 01 <XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <StrValue0> 16 )
 
+
 /*(0x0038/0x002C)*/ 	07 [@label_0x00B4] 84 7A 1A 00 <.I> 01 <@m_arrGameplayToggleTitle> 1F <%t ""> 16 18 [@] ( 7A 1A 00 <.I> 01 <@m_arrGameplayToggleTitle> 1F <%t "unused"> 16 16 ) 
 /*(0x0074/0x0058)*/ 		07 [@label_0x00B1] 28 
 /*(0x0078/0x005C)*/ 			00 <.I> 

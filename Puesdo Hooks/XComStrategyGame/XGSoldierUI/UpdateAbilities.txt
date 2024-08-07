@@ -2,6 +2,26 @@
 UPK_FILE = XComStrategyGame.upk
 OBJECT = XGSoldierUI.UpdateAbilities : AUTO
 [REPLACEMENT_CODE]
+
+/*
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(self, true);
+    int(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0("", true));
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "UpdateAbilities_Overwrite");
+    // End:0x432
+    if(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0() == "True")
+    {
+		return;
+	}
+*/
+
+	19 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "RoulettePlus.RoulettePlusMod"> 16 ) [@] <NullRef> 00 ( 1B <Object> 17 27 16 )
+	38 4A 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <StrValue0> 1F 00 27 16 )
+	19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "AllMods"> 1F <%t "UpdateAbilities_Overwrite"> 16 )
+	07 [@label_overwrite] 7A 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <StrValue0> 16 ) 1F <%t "True"> 16
+	04 0B
+	[#label_overwrite]
+
+
 /*(0x0000/0x0000)*/ 55 35 <XComGame.XGTacticalScreenMgr.TTableMenu.arrCategories> <XComGame.XGTacticalScreenMgr.TTableMenu> 00 00 00 <.kMenu> [@] ( 2C 15 16 ) 
 /*(0x0022/0x0016)*/ 0F 00 <.iPerk> 25 
 /*(0x002D/0x001D)*/ [#label_0x002D]

@@ -9,7 +9,7 @@ function bool HasPerk(int iPerk)
     XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(self, true);    
     int(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0("", true));    
     int(XComGameInfo(WorldInfo.Game).Mods[0].StrValue1("", true));    
-    XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "HasPerk_Overwrite", iPerk);
+    XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "HasPerk_Overwrite", string(iPerk));
     // End:0x24E
     if(XComGameInfo(WorldInfo.Game).Mods[0].StrValue0() == "True")
     {
