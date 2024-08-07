@@ -4,7 +4,7 @@ OBJECT = XGStorage.ClaimItem : AUTO
 [REPLACEMENT_CODE]
 
 /*
-			    XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(kSoldier, true);
+				XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(kSoldier, true);
 				XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "ClaimItem", iItemType);
 */
 

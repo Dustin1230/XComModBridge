@@ -101,16 +101,16 @@ OBJECT = XGFacility_Barracks.DetermineTimeOut : AUTO
 /*(0x0C37/0x08B7)*/ [#label_0x0C37]
 
 /*
-                XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(kSoldier, true);
-                XComGameInfo(WorldInfo.Game).Mods[0].IntValue0(iRandTimeOut, true)
-                XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "DetermineTimeOutSoldier");
-                iRandTimeOut = XComGameInfo(WorldInfo.Game).Mods[0].IntValue0();
+            XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(kSoldier, true);
+            XComGameInfo(WorldInfo.Game).Mods[0].IntValue0(iRandTimeOut, true)
+            XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "DetermineTimeOutSoldier");
+            iRandTimeOut = XComGameInfo(WorldInfo.Game).Mods[0].IntValue0();
 */
 
-			19 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "RoulettePlus.RoulettePlusMod"> 16 ) [@] <NullRef> 00 ( 1B <Object> 00 <.kSoldier> 27 16 )
-            19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <IntValue0> 00 <.iRandTimeOut> 27 16 )
-			19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "AllMods"> 1F <%t "AddNewSoldier"> 16 )
-            0F 00 <.iRandTimeOut> 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <IntValue0> 16 )
+        19 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "RoulettePlus.RoulettePlusMod"> 16 ) [@] <NullRef> 00 ( 1B <Object> 00 <.kSoldier> 27 16 )
+        19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <IntValue0> 00 <.iRandTimeOut> 27 16 )
+        19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "AllMods"> 1F <%t "AddNewSoldier"> 16 )
+        0F 00 <.iRandTimeOut> 19 10 25 19 2E <XComGame.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGame.XComGameInfo.Mods> 00 ( 01 <XComGame.XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <IntValue0> 16 )
 
 
 /*(0x0C37/0x08B7)*/ A1 19 00 <.kSoldier> [@] <XGStrategySoldier.m_iTurnsOut> 00 ( 01 <XGStrategySoldier.m_iTurnsOut> ) 00 <.iRandTimeOut> 16 
