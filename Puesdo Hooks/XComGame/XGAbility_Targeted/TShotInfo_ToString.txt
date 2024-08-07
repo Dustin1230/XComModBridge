@@ -1,0 +1,25 @@
+UPK_FILE = XComGame.upk
+OBJECT = XGAbility_Targeted.TShotInfo_ToString : AUTO
+
+[BEFORE_CODE]
+
+    04 00 <.I>
+    04 3A <.ReturnValue>
+    53
+
+[AFTER_CODE]
+
+/*
+            XComGameInfo(WorldInfo.Game).Mods[0].IntValue0(I, true);
+            XComGameInfo(WorldInfo.Game).Mods[0].Mods("RoulettePlus.RoulettePlusMod").Object(self, true);
+            XComGameInfo(WorldInfo.Game).Mods[0].Mods("AllMods", "GetDamageModifier");
+            I = XComGameInfo(WorldInfo.Game).Mods[0].IntValue0();
+*/
+
+        19 10 25 19 2E <Class.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGameInfo.Mods> 00 ( 01 <XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <IntValue0> 00 <.I> 27 16 )
+        19 19 10 25 19 2E <Class.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGameInfo.Mods> 00 ( 01 <XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "RoulettePlus.RoulettePlusMod"> 16 ) [@] <NullRef> 00 ( 1B <Object> 17 27 16 )
+        19 10 25 19 2E <Class.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGameInfo.Mods> 00 ( 01 <XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <Mods> 1F <%t "AllMods"> 1F <%t "GetDamageModifier"> 16 )
+        0F 00 <.I> 19 10 25 19 2E <Class.XComGameInfo> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComGameInfo.Mods> 00 ( 01 <XComGameInfo.Mods> ) [@] <NullRef> 00 ( 1B <IntValue0> 16 )
+        04 00 <.I>
+        04 3A <.ReturnValue>
+        53

@@ -42,10 +42,10 @@ OBJECT = XGUnit.BecomePossessed : AUTO
 /*(0x01ED/0x016D)*/ [#label_0x01ED]
 
 /*
-			ApplyInventoryStatModifiers();
+            ApplyInventoryStatModifiers();
 */
 
-		1B <ApplyInventoryStatModifiers> 16
+        1B <ApplyInventoryStatModifiers> 16
 
 
 /*(0x01ED/0x016D)*/ 04 0B 

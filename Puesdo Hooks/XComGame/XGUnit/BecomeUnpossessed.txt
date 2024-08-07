@@ -35,10 +35,10 @@ OBJECT = XGUnit.BecomeUnpossessed : AUTO
 /*(0x00F1/0x00B5)*/ 1B <ClearAbilitiesOnMindControl> 16 
 
 /*
-			ApplyInventoryStatModifiers();
+            ApplyInventoryStatModifiers();
 */
 
-		1B <ApplyInventoryStatModifiers> 16
+        1B <ApplyInventoryStatModifiers> 16
 
 
 /*(0x00FB/0x00BF)*/ 04 0B 
